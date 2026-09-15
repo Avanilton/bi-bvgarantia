@@ -1,0 +1,54 @@
+// This is your Prisma schema file for the LOCAL SQLite cache database.
+
+generator client {
+  provider = "prisma-client-js"
+  output   = "../src/generated/prisma"
+}
+
+datasource db {
+  provider = "sqlite"
+  url      = env("DATABASE_URL")
+}
+
+// Metadados de cada "foto" tirada do banco Novacorp
+model SnapshotMeta {
+  id        Int      @id @default(autoincrement())
+  criadoEm  DateTime @default(now())
+  tipoSnap  String   @default("MANUAL") // "DIARIO" | "MANUAL"
+  status    String   @default("OK") // "OK" | "ERRO" | "PROCESSANDO"
+  mensagem  String?
+  duracaoMs Int?
+}
+
+// KPIs agregados por condomínio e mês, resultado do snapshot
+model KpiDiario {
+  id           Int    @id @default(autoincrement())
+  snapshotId   Int
+  idImovel     Int
+  nomeImovel   String
+  tipo         String // INADIMPLENCIA | RECEBIMENTO | JURIDICOS | AMIGAVEL | RECEITAS_VAR | FATURAMENTO
+  mesRef       String // "YYYY-MM"
+  valor        Float  @default(0)
+  juros        Float  @default(0)
+  correcao     Float  @default(0)
+  multa        Float  @default(0)
+  encargo      Float  @default(0)
+  tarifaBoleto Float  @default(0)
+
+  @@index([tipo, idImovel, mesRef])
+  @@index([tipo, mesRef])
+  @@index([snapshotId])
+}
+
+// Usuários do sistema BI
+model Usuario {
+  id        Int      @id @default(autoincrement())
+  email     String   @unique
+  nome      String
+  senhaHash String
+  perfil    String   @default("VISUALIZADOR") // "ADMIN" | "OPERADOR" | "VISUALIZADOR"
+  ativo     Boolean  @default(true)
+  acessos   String   @default("[]") // JSON array: ["dashboard", "configuracoes"]
+  criadoEm  DateTime @default(now())
+  updatedAt DateTime @updatedAt
+}

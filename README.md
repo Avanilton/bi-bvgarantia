@@ -1,36 +1,100 @@
-This is a [Next.js](https://nextjs.org) project bootstrapped with [`create-next-app`](https://nextjs.org/docs/app/api-reference/cli/create-next-app).
+# BI BVGarantia — Dashboard Financeiro
 
-## Getting Started
+Dashboard de indicadores financeiros para o grupo BV Garantia, construído com Next.js 14.
 
-First, run the development server:
+## Stack
+- **Next.js 14** (App Router + TypeScript)
+- **Tailwind CSS 4** (tema laranja + verde claríssimo)
+- **Prisma 5 + SQLite** (cache local)
+- **MySQL 8** (Novacorp — fonte de dados)
+- **NextAuth v5** (autenticação JWT)
+- **Recharts** (gráficos)
 
+## Configuração Local
+
+### 1. Instalar dependências
 ```bash
-npm run dev
-# or
-yarn dev
-# or
-pnpm dev
-# or
-bun dev
+npm install
 ```
 
-Open [http://localhost:3000](http://localhost:3000) with your browser to see the result.
+### 2. Configurar variáveis de ambiente
+Crie o arquivo `.env.local` na raiz com:
+```env
+MYSQL_HOST=sistemasnovacorp.com.br
+MYSQL_PORT=5643
+MYSQL_DATABASE=novacorpconect
+MYSQL_USER=Intelligence
+MYSQL_PASSWORD=@bv2026@
+MYSQL_TIMEZONE=America/Sao_Paulo
+NEXTAUTH_URL=http://localhost:3000
+NEXTAUTH_SECRET=bvgarantia-bi-secret-2026-ultra-seguro
+DATABASE_URL="file:./local.db"
+ID_EMPRESA=75
+```
 
-You can start editing the page by modifying `app/page.tsx`. The page auto-updates as you edit the file.
+### 3. Criar banco local e usuário admin
+```bash
+# Cria o SQLite e sincroniza o schema
+$env:DATABASE_URL="file:./local.db"; node node_modules/prisma/build/index.js db push
 
-This project uses [`next/font`](https://nextjs.org/docs/app/building-your-application/optimizing/fonts) to automatically optimize and load [Geist](https://vercel.com/font), a new font family for Vercel.
+# Cria o usuário admin
+node prisma/seed.mjs
+```
 
-## Learn More
+### 4. Rodar em desenvolvimento
+```bash
+npm run dev
+```
+Acesse: http://localhost:3000
+Login: `admin@bvgarantia.com.br` / `123456`
 
-To learn more about Next.js, take a look at the following resources:
+---
 
-- [Next.js Documentation](https://nextjs.org/docs) - learn about Next.js features and API.
-- [Learn Next.js](https://nextjs.org/learn) - an interactive Next.js tutorial.
+## Deploy — Vercel + GitHub
 
-You can check out [the Next.js GitHub repository](https://github.com/vercel/next.js) - your feedback and contributions are welcome!
+### 1. GitHub
+```bash
+git init
+git remote add origin https://github.com/SEU_USUARIO/bi-bvgarantia.git
+git add .
+git commit -m "chore: projeto inicial BI BVGarantia"
+git push -u origin main
+```
 
-## Deploy on Vercel
+### 2. Vercel
+1. Acesse [vercel.com](https://vercel.com) → Import Git Repository
+2. Selecione o repositório `bi-bvgarantia`
+3. Configure as **Environment Variables** (mesmas do `.env.local`, sem o `DATABASE_URL`)
+4. Deploy!
 
-The easiest way to deploy your Next.js app is to use the [Vercel Platform](https://vercel.com/new?utm_medium=default-template&filter=next.js&utm_source=create-next-app&utm_campaign=create-next-app-readme) from the creators of Next.js.
+### 3. Subdomínio no cPanel (ValueHost)
+1. No cPanel → **Subdomínios** → Criar `bi.bvgarantia.com.br`
+2. Em **DNS Zone Editor** → Adicionar registro CNAME:
+   - Nome: `bi`
+   - Valor: `cname.vercel-dns.com`
+3. Na Vercel → Settings → Domains → Adicionar `bi.bvgarantia.com.br`
 
-Check out our [Next.js deployment documentation](https://nextjs.org/docs/app/building-your-application/deploying) for more details.
+---
+
+## Snapshot (Foto do banco)
+O sistema usa SQLite local como cache para performance máxima.
+Para atualizar os dados:
+1. Acesse **Configurações → Snapshot**
+2. Clique em **"Tirar Foto Agora"**
+3. Aguarde a conclusão (normalmente < 30s)
+
+Recomenda-se fazer o snapshot diariamente pela manhã.
+
+---
+
+## Usuários
+| Email | Senha | Perfil |
+|-------|-------|--------|
+| admin@bvgarantia.com.br | 123456 | ADMIN |
+
+**Segurança**: Altere a senha padrão após o primeiro login em Configurações → Alterar Senha.
+
+---
+
+## Logout automático
+O sistema desconecta automaticamente após **10 minutos de inatividade**.
