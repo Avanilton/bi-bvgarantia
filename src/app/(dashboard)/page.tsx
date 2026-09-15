@@ -1,6 +1,6 @@
 "use client";
 
-import { useState, useEffect, useCallback } from "react";
+import { useState, useEffect, useCallback, Suspense } from "react";
 import { useSearchParams } from "next/navigation";
 import { RefreshCw, Clock, Camera, DollarSign, Gavel, Handshake, CheckCircle2 } from "lucide-react";
 import { InadimplenciaCard, KpiCard } from "@/components/KpiCards";
@@ -37,7 +37,7 @@ const EMPTY: DashData = {
   snapStatus: null,
 };
 
-export default function DashboardPage() {
+function DashboardContent() {
   const searchParams = useSearchParams();
   const [data, setData] = useState<DashData>(EMPTY);
   const [loading, setLoading] = useState(true);
@@ -278,5 +278,19 @@ export default function DashboardPage() {
         )}
       </div>
     </div>
+  );
+}
+
+export default function DashboardPage() {
+  return (
+    <Suspense
+      fallback={
+        <div className="flex items-center justify-center min-h-[60vh]">
+          <div className="animate-spin rounded-full h-8 w-8 border-b-2 border-orange-500" />
+        </div>
+      }
+    >
+      <DashboardContent />
+    </Suspense>
   );
 }
