@@ -5,6 +5,7 @@ import { useSearchParams } from "next/navigation";
 import { RefreshCw, Clock, Camera, DollarSign, Gavel, Handshake, CheckCircle2 } from "lucide-react";
 import { InadimplenciaCard, KpiCard } from "@/components/KpiCards";
 import { RecebimentoChart, FaturamentoChart, ReceitasVariaveisChart } from "@/components/Charts";
+import { KpiDetailsModal } from "@/components/KpiDetailsModal";
 import { formatBRL } from "@/lib/utils";
 
 interface DashData {
@@ -41,6 +42,10 @@ export default function DashboardPage() {
   const [data, setData] = useState<DashData>(EMPTY);
   const [loading, setLoading] = useState(true);
   const [updatedAt, setUpdatedAt] = useState<Date | null>(null);
+
+  const [modalTipo, setModalTipo] = useState<
+    "INADIMPLENCIA" | "RECEBIMENTO" | "JURIDICOS" | "AMIGAVEL" | null
+  >(null);
 
   const condoId = searchParams.get("condominio");
   const [condoNome, setCondoNome] = useState<string | null>(null);
@@ -92,6 +97,16 @@ export default function DashboardPage() {
 
   return (
     <div className="space-y-6 max-w-7xl mx-auto pb-8">
+      {/* Modal de Detalhes do KPI */}
+      <KpiDetailsModal
+        isOpen={Boolean(modalTipo)}
+        onClose={() => setModalTipo(null)}
+        tipo={modalTipo}
+        condominio={searchParams.get("condominio") || ""}
+        dataInicio={searchParams.get("dataInicio") || ""}
+        dataFim={searchParams.get("dataFim") || ""}
+      />
+
       {/* Header */}
       <div className="flex flex-col sm:flex-row sm:items-center justify-between gap-3">
         <div>
@@ -157,7 +172,11 @@ export default function DashboardPage() {
 
       {/* ── 4 Cards KPI ─────────────────────────────────────────────── */}
       <div className="grid grid-cols-1 sm:grid-cols-2 xl:grid-cols-4 gap-4">
-        <InadimplenciaCard value={data.cards.inadimplencia} loading={loading} />
+        <InadimplenciaCard
+          value={data.cards.inadimplencia}
+          loading={loading}
+          onClick={() => setModalTipo("INADIMPLENCIA")}
+        />
 
         <KpiCard
           title="Recebimento (D-1)"
@@ -166,6 +185,7 @@ export default function DashboardPage() {
           colorGreen
           subtitle="Boletos pagos até ontem"
           loading={loading}
+          onClick={() => setModalTipo("RECEBIMENTO")}
         />
 
         <KpiCard
@@ -175,6 +195,7 @@ export default function DashboardPage() {
           colorOrange
           subtitle="Origem 5 — vencidos D-1"
           loading={loading}
+          onClick={() => setModalTipo("JURIDICOS")}
         />
 
         <KpiCard
@@ -184,6 +205,7 @@ export default function DashboardPage() {
           colorRed
           subtitle="Origem 6 — vencidos D-1"
           loading={loading}
+          onClick={() => setModalTipo("AMIGAVEL")}
         />
       </div>
 

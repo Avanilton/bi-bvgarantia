@@ -8,6 +8,7 @@ import {
   Handshake,
   CheckCircle2,
   LucideIcon,
+  ExternalLink,
 } from "lucide-react";
 import { formatBRL } from "@/lib/utils";
 
@@ -21,6 +22,7 @@ interface KpiCardProps {
   colorBlue?: boolean;
   subtitle?: string;
   loading?: boolean;
+  onClick?: () => void;
 }
 
 export function KpiCard({
@@ -32,6 +34,7 @@ export function KpiCard({
   colorRed,
   subtitle,
   loading,
+  onClick,
 }: KpiCardProps) {
   const bg = colorOrange
     ? "#fff3e0"
@@ -50,13 +53,18 @@ export function KpiCard({
     : "#16a34a";
 
   return (
-    <div className="card p-5 animate-fadeIn">
+    <div
+      onClick={onClick}
+      className={`card p-5 animate-fadeIn transition-all duration-200 ${
+        onClick ? "cursor-pointer hover:shadow-lg hover:-translate-y-0.5 group" : ""
+      }`}
+    >
       <div className="flex items-start justify-between mb-3">
-        <p className="text-xs font-semibold uppercase tracking-wide" style={{ color: "#9ca3af" }}>
+        <p className="text-xs font-semibold uppercase tracking-wide group-hover:text-orange-600 transition-colors" style={{ color: "#9ca3af" }}>
           {title}
         </p>
         <div
-          className="w-9 h-9 rounded-xl flex items-center justify-center flex-shrink-0"
+          className="w-9 h-9 rounded-xl flex items-center justify-center flex-shrink-0 group-hover:scale-105 transition-transform"
           style={{ background: bg }}
         >
           <Icon size={18} style={{ color: iconColor }} />
@@ -74,29 +82,50 @@ export function KpiCard({
         </p>
       )}
 
-      {subtitle && (
-        <p className="text-xs mt-1.5" style={{ color: "#9ca3af" }}>
-          {subtitle}
-        </p>
-      )}
+      <div className="flex items-center justify-between mt-1.5">
+        {subtitle && (
+          <p className="text-xs" style={{ color: "#9ca3af" }}>
+            {subtitle}
+          </p>
+        )}
+        {onClick && (
+          <span className="text-[10px] font-semibold text-orange-500 opacity-0 group-hover:opacity-100 transition-opacity flex items-center gap-1 ml-auto">
+            Ver detalhes <ExternalLink size={10} />
+          </span>
+        )}
+      </div>
     </div>
   );
 }
 
 // ── Card de Inadimplência com destaque vermelho ───────────────────────────
-export function InadimplenciaCard({ value, loading }: { value: number; loading?: boolean }) {
+export function InadimplenciaCard({
+  value,
+  loading,
+  onClick,
+}: {
+  value: number;
+  loading?: boolean;
+  onClick?: () => void;
+}) {
   return (
     <div
-      className="card p-5 animate-fadeIn"
+      onClick={onClick}
+      className={`card p-5 animate-fadeIn transition-all duration-200 ${
+        onClick ? "cursor-pointer hover:shadow-lg hover:-translate-y-0.5 group" : ""
+      }`}
       style={{
         borderLeft: "4px solid #ef4444",
       }}
     >
       <div className="flex items-start justify-between mb-3">
-        <p className="text-xs font-semibold uppercase tracking-wide" style={{ color: "#9ca3af" }}>
+        <p className="text-xs font-semibold uppercase tracking-wide group-hover:text-red-600 transition-colors" style={{ color: "#9ca3af" }}>
           Inadimplência (D-1)
         </p>
-        <div className="w-9 h-9 rounded-xl flex items-center justify-center" style={{ background: "#fef2f2" }}>
+        <div
+          className="w-9 h-9 rounded-xl flex items-center justify-center group-hover:scale-105 transition-transform"
+          style={{ background: "#fef2f2" }}
+        >
           <AlertTriangle size={18} style={{ color: "#ef4444" }} />
         </div>
       </div>
@@ -108,9 +137,17 @@ export function InadimplenciaCard({ value, loading }: { value: number; loading?:
           {formatBRL(value)}
         </p>
       )}
-      <p className="text-xs mt-1.5" style={{ color: "#9ca3af" }}>
-        Boletos vencidos não pagos
-      </p>
+
+      <div className="flex items-center justify-between mt-1.5">
+        <p className="text-xs" style={{ color: "#9ca3af" }}>
+          Boletos vencidos não pagos
+        </p>
+        {onClick && (
+          <span className="text-[10px] font-semibold text-red-500 opacity-0 group-hover:opacity-100 transition-opacity flex items-center gap-1 ml-auto">
+            Ver detalhes <ExternalLink size={10} />
+          </span>
+        )}
+      </div>
     </div>
   );
 }
