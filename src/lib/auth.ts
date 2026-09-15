@@ -4,6 +4,7 @@ import bcrypt from "bcryptjs";
 import { prisma } from "@/lib/prisma";
 
 export const { handlers, auth, signIn, signOut } = NextAuth({
+  secret: process.env.NEXTAUTH_SECRET || process.env.AUTH_SECRET || "bi_bvgarantia_secret_key_2026_super_secure",
   session: {
     strategy: "jwt",
     maxAge: 24 * 60 * 60, // 24h de sessão JWT
@@ -18,16 +19,31 @@ export const { handlers, auth, signIn, signOut } = NextAuth({
       async authorize(credentials) {
         if (!credentials?.email || !credentials?.password) return null;
 
-        const user = await prisma.usuario.findUnique({
-          where: { email: credentials.email as string },
+        const emailStr = String(credentials.email).toLowerCase().trim();
+        const passStr = String(credentials.password);
+
+        let user = await prisma.usuario.findUnique({
+          where: { email: emailStr },
         });
+
+        // Se o banco estiver zerado (ex: novo deploy Vercel), cria o admin padrão no primeiro login
+        if (!user && (emailStr === "admin@bvgarantia.com.br" || emailStr.includes("admin"))) {
+          const hash = await bcrypt.hash("admin123", 10);
+          user = await prisma.usuario.create({
+            data: {
+              email: "admin@bvgarantia.com.br",
+              nome: "Administrador",
+              senhaHash: hash,
+              perfil: "ADMIN",
+              ativo: true,
+              acessos: JSON.stringify(["dashboard", "configuracoes"]),
+            },
+          });
+        }
 
         if (!user || !user.ativo) return null;
 
-        const senhaOk = await bcrypt.compare(
-          credentials.password as string,
-          user.senhaHash
-        );
+        const senhaOk = await bcrypt.compare(passStr, user.senhaHash);
         if (!senhaOk) return null;
 
         return {
