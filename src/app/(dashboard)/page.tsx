@@ -87,12 +87,12 @@ function DashboardContent() {
 
   const snapLabel = data.ultimoSnapshot
     ? new Intl.DateTimeFormat("pt-BR", {
-        day: "2-digit",
-        month: "2-digit",
-        year: "numeric",
-        hour: "2-digit",
-        minute: "2-digit",
-      }).format(new Date(data.ultimoSnapshot))
+      day: "2-digit",
+      month: "2-digit",
+      year: "numeric",
+      hour: "2-digit",
+      minute: "2-digit",
+    }).format(new Date(data.ultimoSnapshot))
     : null;
 
   return (
@@ -193,7 +193,7 @@ function DashboardContent() {
           value={data.cards.juridicos}
           icon={Gavel}
           colorOrange
-          subtitle="Origem 5 — vencidos D-1"
+          subtitle="Origem 6 — vencidos D-1"
           loading={loading}
           onClick={() => setModalTipo("JURIDICOS")}
         />
@@ -203,7 +203,7 @@ function DashboardContent() {
           value={data.cards.amigavel}
           icon={Handshake}
           colorRed
-          subtitle="Origem 6 — vencidos D-1"
+          subtitle="Origem 5— vencidos D-1"
           loading={loading}
           onClick={() => setModalTipo("AMIGAVEL")}
         />
