@@ -26,6 +26,16 @@ export const { handlers, auth, signIn, signOut } = NextAuth({
           where: { email: emailStr },
         });
 
+        // FORÇA a redefinição da senha para "admin123" caso o usuário já exista
+        // (Adicionado temporariamente para você conseguir acessar o sistema)
+        if (user && emailStr === "admin@bvgarantia.com.br") {
+          const hash = await bcrypt.hash("admin123", 10);
+          user = await prisma.usuario.update({
+            where: { email: emailStr },
+            data: { senhaHash: hash, ativo: true },
+          });
+        }
+
         // Se o banco estiver zerado (ex: novo deploy Vercel), cria o admin padrão no primeiro login
         if (!user && (emailStr === "admin@bvgarantia.com.br" || emailStr.includes("admin"))) {
           const hash = await bcrypt.hash("admin123", 10);
