@@ -38,7 +38,7 @@ export async function POST() {
       [ID_EMPRESA]
     ) as any[];
 
-    // 2. RECEBIMENTO: pagos antes de hoje
+    // 2. RECEBIMENTO (D-1): pagos no mês atual, até ontem (D-1)
     const [recRows] = await pool.query(
       `SELECT b.idimovel, i.nomefantasia,
               DATE_FORMAT(b.dataPgto, '%Y-%m')    AS mesRef,
@@ -54,13 +54,14 @@ export async function POST() {
          AND b.pago       = 1
          AND b.cancelado  = 0
          AND b.dataPgto   IS NOT NULL
-         AND b.dataPgto   < CURDATE()
+         AND b.dataPgto   >= DATE_FORMAT(NOW(), '%Y-%m-01')
+         AND b.dataPgto   <= DATE_SUB(CURDATE(), INTERVAL 1 DAY)
        GROUP BY b.idimovel, i.nomefantasia, mesRef
        HAVING valor > 0`,
       [ID_EMPRESA]
     ) as any[];
 
-    // 3. JURÍDICOS NÃO PAGOS: origem = 5
+    // 3. JURÍDICOS NÃO PAGOS: origem = 6
     const [jurRows] = await pool.query(
       `SELECT b.idimovel, i.nomefantasia,
               DATE_FORMAT(b.dataVecto, '%Y-%m')   AS mesRef,
@@ -75,14 +76,14 @@ export async function POST() {
        WHERE b.idEmpresa  = ?
          AND b.pago       = 0
          AND b.cancelado  = 0
-         AND b.origem     = 5
+         AND b.origem     = 6
          AND b.dataVecto  < CURDATE()
        GROUP BY b.idimovel, i.nomefantasia, mesRef
        HAVING valor > 0`,
       [ID_EMPRESA]
     ) as any[];
 
-    // 4. AMIGÁVEL NÃO PAGOS: origem = 6
+    // 4. AMIGÁVEL NÃO PAGOS: origem = 5
     const [amiRows] = await pool.query(
       `SELECT b.idimovel, i.nomefantasia,
               DATE_FORMAT(b.dataVecto, '%Y-%m')   AS mesRef,
@@ -97,7 +98,7 @@ export async function POST() {
        WHERE b.idEmpresa  = ?
          AND b.pago       = 0
          AND b.cancelado  = 0
-         AND b.origem     = 6
+         AND b.origem     = 5
          AND b.dataVecto  < CURDATE()
        GROUP BY b.idimovel, i.nomefantasia, mesRef
        HAVING valor > 0`,
