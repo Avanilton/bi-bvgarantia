@@ -1,7 +1,7 @@
+"use client";
+
+import { useState } from "react";
 import {
-  TrendingUp,
-  TrendingDown,
-  Minus,
   AlertTriangle,
   DollarSign,
   Gavel,
@@ -9,6 +9,8 @@ import {
   CheckCircle2,
   LucideIcon,
   ExternalLink,
+  Eye,
+  EyeOff,
 } from "lucide-react";
 import { formatBRL } from "@/lib/utils";
 
@@ -36,6 +38,8 @@ export function KpiCard({
   loading,
   onClick,
 }: KpiCardProps) {
+  const [hidden, setHidden] = useState(false);
+
   const bg = colorOrange
     ? "#fff3e0"
     : colorGreen
@@ -63,11 +67,25 @@ export function KpiCard({
         <p className="text-xs font-semibold uppercase tracking-wide group-hover:text-orange-600 transition-colors" style={{ color: "#9ca3af" }}>
           {title}
         </p>
-        <div
-          className="w-9 h-9 rounded-xl flex items-center justify-center flex-shrink-0 group-hover:scale-105 transition-transform"
-          style={{ background: bg }}
-        >
-          <Icon size={18} style={{ color: iconColor }} />
+        <div className="flex items-center gap-2 flex-shrink-0">
+          {/* Botão olho */}
+          <button
+            onClick={(e) => { e.stopPropagation(); setHidden((h) => !h); }}
+            className="w-7 h-7 rounded-lg flex items-center justify-center transition-all duration-200 hover:bg-gray-100"
+            title={hidden ? "Mostrar valor" : "Ocultar valor"}
+          >
+            {hidden ? (
+              <EyeOff size={14} style={{ color: "#9ca3af" }} />
+            ) : (
+              <Eye size={14} style={{ color: "#9ca3af" }} />
+            )}
+          </button>
+          <div
+            className="w-9 h-9 rounded-xl flex items-center justify-center group-hover:scale-105 transition-transform"
+            style={{ background: bg }}
+          >
+            <Icon size={18} style={{ color: iconColor }} />
+          </div>
         </div>
       </div>
 
@@ -77,7 +95,14 @@ export function KpiCard({
           style={{ background: "#f3f4f6" }}
         />
       ) : (
-        <p className="text-2xl font-bold tracking-tight" style={{ color: "#111827" }}>
+        <p
+          className="text-2xl font-bold tracking-tight transition-all duration-300 select-none"
+          style={{
+            color: "#111827",
+            filter: hidden ? "blur(8px)" : "none",
+            userSelect: hidden ? "none" : "auto",
+          }}
+        >
           {formatBRL(value)}
         </p>
       )}
@@ -108,6 +133,8 @@ export function InadimplenciaCard({
   loading?: boolean;
   onClick?: () => void;
 }) {
+  const [hidden, setHidden] = useState(false);
+
   return (
     <div
       onClick={onClick}
@@ -122,18 +149,39 @@ export function InadimplenciaCard({
         <p className="text-xs font-semibold uppercase tracking-wide group-hover:text-red-600 transition-colors" style={{ color: "#9ca3af" }}>
           Inadimplência (D-1)
         </p>
-        <div
-          className="w-9 h-9 rounded-xl flex items-center justify-center group-hover:scale-105 transition-transform"
-          style={{ background: "#fef2f2" }}
-        >
-          <AlertTriangle size={18} style={{ color: "#ef4444" }} />
+        <div className="flex items-center gap-2 flex-shrink-0">
+          {/* Botão olho */}
+          <button
+            onClick={(e) => { e.stopPropagation(); setHidden((h) => !h); }}
+            className="w-7 h-7 rounded-lg flex items-center justify-center transition-all duration-200 hover:bg-red-50"
+            title={hidden ? "Mostrar valor" : "Ocultar valor"}
+          >
+            {hidden ? (
+              <EyeOff size={14} style={{ color: "#9ca3af" }} />
+            ) : (
+              <Eye size={14} style={{ color: "#9ca3af" }} />
+            )}
+          </button>
+          <div
+            className="w-9 h-9 rounded-xl flex items-center justify-center group-hover:scale-105 transition-transform"
+            style={{ background: "#fef2f2" }}
+          >
+            <AlertTriangle size={18} style={{ color: "#ef4444" }} />
+          </div>
         </div>
       </div>
 
       {loading ? (
         <div className="h-7 w-32 rounded animate-pulse-soft" style={{ background: "#f3f4f6" }} />
       ) : (
-        <p className="text-2xl font-bold" style={{ color: "#dc2626" }}>
+        <p
+          className="text-2xl font-bold transition-all duration-300 select-none"
+          style={{
+            color: "#dc2626",
+            filter: hidden ? "blur(8px)" : "none",
+            userSelect: hidden ? "none" : "auto",
+          }}
+        >
           {formatBRL(value)}
         </p>
       )}
