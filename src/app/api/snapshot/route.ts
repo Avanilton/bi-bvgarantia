@@ -21,14 +21,14 @@ export async function POST() {
     const [inadRows] = await pool.query(
       `SELECT b.idimovel, i.nomefantasia,
               DATE_FORMAT(b.dataVecto, '%Y-%m')   AS mesRef,
-              SUM(IFNULL(b.total, 0))             AS valor,
+              SUM(IFNULL(b.valorparc, 0))         AS valor,
               SUM(IFNULL(b.juros, 0))             AS juros,
               SUM(IFNULL(b.correcao, 0))          AS correcao,
               SUM(IFNULL(b.multa, 0))             AS multa,
               SUM(IFNULL(b.encargo, 0))           AS encargo,
               SUM(IFNULL(b.tarifaBancaria, 0))    AS tarifaBoleto
        FROM TBBOLETO b
-       LEFT JOIN TBIMOVEL i ON i.idEmpresa = b.idEmpresa AND i.idimovel = b.idimovel
+       JOIN TBIMOVEL i ON i.idEmpresa = b.idEmpresa AND i.idimovel = b.idimovel
        WHERE b.idEmpresa  = ?
          AND b.pago       = 0
          AND b.cancelado  = 0
@@ -49,7 +49,7 @@ export async function POST() {
               SUM(IFNULL(b.encargo, 0))           AS encargo,
               SUM(IFNULL(b.tarifaBancaria, 0))    AS tarifaBoleto
        FROM TBBOLETO b
-       LEFT JOIN TBIMOVEL i ON i.idEmpresa = b.idEmpresa AND i.idimovel = b.idimovel
+       JOIN TBIMOVEL i ON i.idEmpresa = b.idEmpresa AND i.idimovel = b.idimovel
        WHERE b.idEmpresa  = ?
          AND b.pago       = 1
          AND b.cancelado  = 0
@@ -72,7 +72,7 @@ export async function POST() {
               SUM(IFNULL(b.encargo, 0))           AS encargo,
               SUM(IFNULL(b.tarifaBancaria, 0))    AS tarifaBoleto
        FROM TBBOLETO b
-       LEFT JOIN TBIMOVEL i ON i.idEmpresa = b.idEmpresa AND i.idimovel = b.idimovel
+       JOIN TBIMOVEL i ON i.idEmpresa = b.idEmpresa AND i.idimovel = b.idimovel
        WHERE b.idEmpresa  = ?
          AND b.pago       = 0
          AND b.cancelado  = 0
@@ -94,7 +94,7 @@ export async function POST() {
               SUM(IFNULL(b.encargo, 0))           AS encargo,
               SUM(IFNULL(b.tarifaBancaria, 0))    AS tarifaBoleto
        FROM TBBOLETO b
-       LEFT JOIN TBIMOVEL i ON i.idEmpresa = b.idEmpresa AND i.idimovel = b.idimovel
+       JOIN TBIMOVEL i ON i.idEmpresa = b.idEmpresa AND i.idimovel = b.idimovel
        WHERE b.idEmpresa  = ?
          AND b.pago       = 0
          AND b.cancelado  = 0
@@ -118,7 +118,7 @@ export async function POST() {
                + SUM(IFNULL(b.juros, 0)) + SUM(IFNULL(b.multa, 0))
                + SUM(IFNULL(b.tarifaBancaria, 0))) AS valor
        FROM TBBOLETO b
-       LEFT JOIN TBIMOVEL i ON i.idEmpresa = b.idEmpresa AND i.idimovel = b.idimovel
+       JOIN TBIMOVEL i ON i.idEmpresa = b.idEmpresa AND i.idimovel = b.idimovel
        WHERE b.idEmpresa  = ?
          AND b.pago       = 1
          AND b.cancelado  = 0
@@ -137,24 +137,24 @@ export async function POST() {
     const toInsert = (rows: any[], tipo: string) =>
       norm(rows).map((r: any) => ({
         snapshotId: snap.id,
-        idImovel: Number(r.idimovel ?? r.IDIMOVEL ?? 0),
-        nomeImovel: String(r.nomefantasia ?? r.NOMEFANTASIA ?? ("Condomínio " + (r.idimovel ?? r.IDIMOVEL ?? 0))),
+        idImovel:    Number(r.idimovel   ?? r.IDIMOVEL   ?? 0),
+        nomeImovel:  String(r.nomefantasia ?? r.NOMEFANTASIA ?? ""),
         tipo,
-        mesRef: String(r.mesRef ?? ""),
-        valor: Number(r.valor ?? 0),
-        juros: Number(r.juros ?? 0),
-        correcao: Number(r.correcao ?? 0),
-        multa: Number(r.multa ?? 0),
-        encargo: Number(r.encargo ?? 0),
-        tarifaBoleto: Number(r.tarifaBoleto ?? 0),
+        mesRef:      String(r.mesRef ?? ""),
+        valor:       Number(r.valor       ?? 0),
+        juros:       Number(r.juros       ?? 0),
+        correcao:    Number(r.correcao    ?? 0),
+        multa:       Number(r.multa       ?? 0),
+        encargo:     Number(r.encargo     ?? 0),
+        tarifaBoleto:Number(r.tarifaBoleto?? 0),
       }));
 
     const allInserts = [
       ...toInsert(inadRows, "INADIMPLENCIA"),
-      ...toInsert(recRows, "RECEBIMENTO"),
-      ...toInsert(jurRows, "JURIDICOS"),
-      ...toInsert(amiRows, "AMIGAVEL"),
-      ...toInsert(recVarRows, "RECEITAS_VAR"),
+      ...toInsert(recRows,  "RECEBIMENTO"),
+      ...toInsert(jurRows,  "JURIDICOS"),
+      ...toInsert(amiRows,  "AMIGAVEL"),
+      ...toInsert(recVarRows,"RECEITAS_VAR"),
     ];
 
     if (allInserts.length > 0) {
