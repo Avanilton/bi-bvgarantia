@@ -1,18 +1,25 @@
 import { NextResponse } from "next/server";
-import pool from "@/lib/mysql";
+import { prisma } from "@/lib/prisma";
 
-const ID_EMPRESA = Number(process.env.ID_EMPRESA ?? 75);
-
-// GET /api/condominios — retorna lista de condomínios da TBIMOVEL
+// GET /api/condominios — retorna lista de condomínios baseada nos dados do snapshot atual
 export async function GET() {
   try {
-    const [rows] = await pool.query(
-      `SELECT idimovel AS IDIMOVEL, nomefantasia AS NOMEFANTASIA
-       FROM TBIMOVEL
-       WHERE idEmpresa = ?
-       ORDER BY nomefantasia`,
-      [ID_EMPRESA]
-    );
+    const condominios = await prisma.kpiDiario.findMany({
+      select: {
+        idImovel: true,
+        nomeImovel: true,
+      },
+      distinct: ['idImovel'],
+      orderBy: {
+        nomeImovel: 'asc'
+      }
+    });
+
+    const rows = condominios.map(c => ({
+      IDIMOVEL: c.idImovel,
+      NOMEFANTASIA: c.nomeImovel
+    }));
+
     return NextResponse.json({ condominios: rows });
   } catch (err: any) {
     console.error("Erro ao buscar condomínios:", err.message);
