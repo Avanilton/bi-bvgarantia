@@ -28,7 +28,7 @@ export async function POST() {
               SUM(IFNULL(b.encargo, 0))           AS encargo,
               SUM(IFNULL(b.tarifaBancaria, 0))    AS tarifaBoleto
        FROM TBBOLETO b
-       JOIN TBIMOVEL i ON i.idEmpresa = b.idEmpresa AND i.idimovel = b.idimovel
+       LEFT JOIN TBIMOVEL i ON i.idEmpresa = b.idEmpresa AND i.idimovel = b.idimovel
        WHERE b.idEmpresa  = ?
          AND b.pago       = 0
          AND b.cancelado  = 0
@@ -49,7 +49,7 @@ export async function POST() {
               SUM(IFNULL(b.encargo, 0))           AS encargo,
               SUM(IFNULL(b.tarifaBancaria, 0))    AS tarifaBoleto
        FROM TBBOLETO b
-       JOIN TBIMOVEL i ON i.idEmpresa = b.idEmpresa AND i.idimovel = b.idimovel
+       LEFT JOIN TBIMOVEL i ON i.idEmpresa = b.idEmpresa AND i.idimovel = b.idimovel
        WHERE b.idEmpresa  = ?
          AND b.pago       = 1
          AND b.cancelado  = 0
@@ -72,7 +72,7 @@ export async function POST() {
               SUM(IFNULL(b.encargo, 0))           AS encargo,
               SUM(IFNULL(b.tarifaBancaria, 0))    AS tarifaBoleto
        FROM TBBOLETO b
-       JOIN TBIMOVEL i ON i.idEmpresa = b.idEmpresa AND i.idimovel = b.idimovel
+       LEFT JOIN TBIMOVEL i ON i.idEmpresa = b.idEmpresa AND i.idimovel = b.idimovel
        WHERE b.idEmpresa  = ?
          AND b.pago       = 0
          AND b.cancelado  = 0
@@ -94,7 +94,7 @@ export async function POST() {
               SUM(IFNULL(b.encargo, 0))           AS encargo,
               SUM(IFNULL(b.tarifaBancaria, 0))    AS tarifaBoleto
        FROM TBBOLETO b
-       JOIN TBIMOVEL i ON i.idEmpresa = b.idEmpresa AND i.idimovel = b.idimovel
+       LEFT JOIN TBIMOVEL i ON i.idEmpresa = b.idEmpresa AND i.idimovel = b.idimovel
        WHERE b.idEmpresa  = ?
          AND b.pago       = 0
          AND b.cancelado  = 0
@@ -118,7 +118,7 @@ export async function POST() {
                + SUM(IFNULL(b.juros, 0)) + SUM(IFNULL(b.multa, 0))
                + SUM(IFNULL(b.tarifaBancaria, 0))) AS valor
        FROM TBBOLETO b
-       JOIN TBIMOVEL i ON i.idEmpresa = b.idEmpresa AND i.idimovel = b.idimovel
+       LEFT JOIN TBIMOVEL i ON i.idEmpresa = b.idEmpresa AND i.idimovel = b.idimovel
        WHERE b.idEmpresa  = ?
          AND b.pago       = 1
          AND b.cancelado  = 0
@@ -138,7 +138,7 @@ export async function POST() {
       norm(rows).map((r: any) => ({
         snapshotId: snap.id,
         idImovel: Number(r.idimovel ?? r.IDIMOVEL ?? 0),
-        nomeImovel: String(r.nomefantasia ?? r.NOMEFANTASIA ?? ""),
+        nomeImovel: String(r.nomefantasia ?? r.NOMEFANTASIA ?? ("Condomínio " + (r.idimovel ?? r.IDIMOVEL ?? 0))),
         tipo,
         mesRef: String(r.mesRef ?? ""),
         valor: Number(r.valor ?? 0),
