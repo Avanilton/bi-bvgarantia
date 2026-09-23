@@ -21,7 +21,7 @@ export async function POST() {
     const [inadRows] = await pool.query(
       `SELECT b.idimovel, i.nomefantasia,
               DATE_FORMAT(b.dataVecto, '%Y-%m')   AS mesRef,
-              SUM(IFNULL(b.total, 0))             AS valor,
+              SUM(IFNULL(b.valorparc, 0))         AS valor,
               SUM(IFNULL(b.juros, 0))             AS juros,
               SUM(IFNULL(b.correcao, 0))          AS correcao,
               SUM(IFNULL(b.multa, 0))             AS multa,
