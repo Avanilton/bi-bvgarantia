@@ -1,6 +1,6 @@
 import { NextRequest, NextResponse } from "next/server";
 import { prisma } from "@/lib/prisma";
-import { ultimos6Meses, mesLabel } from "@/lib/utils";
+import { ultimos6Meses, mesLabel, toMesRef } from "@/lib/utils";
 
 // GET /api/dashboard?condominio=X&dataInicio=YYYY-MM-DD&dataFim=YYYY-MM-DD
 export async function GET(req: NextRequest) {
@@ -34,10 +34,16 @@ export async function GET(req: NextRequest) {
   };
 
   try {
+    // Para o card de Recebimento, se não houver filtro de data, mostrar apenas o mês atual
+    const recWhere = buildWhere("RECEBIMENTO");
+    if (!mesInicio && !mesFim) {
+      recWhere.mesRef = toMesRef(new Date());
+    }
+
     // ─── Cards principais (SUM) ──────────────────────────────────────────────
     const [inadSum, recSum, jurSum, amiSum] = await Promise.all([
       prisma.kpiDiario.aggregate({ _sum: { valor: true }, where: buildWhere("INADIMPLENCIA") }),
-      prisma.kpiDiario.aggregate({ _sum: { valor: true }, where: buildWhere("RECEBIMENTO") }),
+      prisma.kpiDiario.aggregate({ _sum: { valor: true }, where: recWhere }),
       prisma.kpiDiario.aggregate({ _sum: { valor: true }, where: buildWhere("JURIDICOS") }),
       prisma.kpiDiario.aggregate({ _sum: { valor: true }, where: buildWhere("AMIGAVEL") }),
     ]);
