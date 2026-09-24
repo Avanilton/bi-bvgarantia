@@ -56,15 +56,23 @@ export function RecebimentoChart({ data }: { data: { mes: string; valor: number;
           <CartesianGrid strokeDasharray="3 3" stroke="#f3f4f6" />
           <XAxis dataKey="mes" tick={{ fontSize: 11, fill: "#9ca3af" }} />
           <YAxis
+            yAxisId="left"
             tick={{ fontSize: 10, fill: "#9ca3af" }}
             tickFormatter={(v) =>
               new Intl.NumberFormat("pt-BR", { notation: "compact", currency: "BRL", style: "currency" }).format(v)
             }
             width={72}
           />
+          <YAxis
+            yAxisId="right"
+            orientation="right"
+            tick={{ fontSize: 10, fill: "#9ca3af" }}
+            tickFormatter={(v) => `${v}%`}
+            width={40}
+          />
           <Tooltip content={<CustomTooltip />} />
           <Legend wrapperStyle={{ fontSize: 11, color: "#6b7280" }} />
-          <Bar dataKey="valor" name="Recebido" fill="#f97316" radius={[4, 4, 0, 0]} maxBarSize={40} />
+          <Bar dataKey="valor" name="Recebido" fill="#f97316" radius={[4, 4, 0, 0]} maxBarSize={40} yAxisId="left" />
           <Line
             type="monotone"
             dataKey="crescimento"
@@ -72,7 +80,7 @@ export function RecebimentoChart({ data }: { data: { mes: string; valor: number;
             stroke="#22c55e"
             strokeWidth={2}
             dot={{ fill: "#22c55e", r: 3 }}
-            yAxisId={0}
+            yAxisId="right"
           />
         </ComposedChart>
       </ResponsiveContainer>
@@ -92,15 +100,23 @@ export function FaturamentoChart({ data }: { data: { mes: string; valor: number;
           <CartesianGrid strokeDasharray="3 3" stroke="#f3f4f6" />
           <XAxis dataKey="mes" tick={{ fontSize: 11, fill: "#9ca3af" }} />
           <YAxis
+            yAxisId="left"
             tick={{ fontSize: 10, fill: "#9ca3af" }}
             tickFormatter={(v) =>
               new Intl.NumberFormat("pt-BR", { notation: "compact", currency: "BRL", style: "currency" }).format(v)
             }
             width={72}
           />
+          <YAxis
+            yAxisId="right"
+            orientation="right"
+            tick={{ fontSize: 10, fill: "#9ca3af" }}
+            tickFormatter={(v) => `${v}%`}
+            width={40}
+          />
           <Tooltip content={<CustomTooltip />} />
           <Legend wrapperStyle={{ fontSize: 11, color: "#6b7280" }} />
-          <Bar dataKey="valor" name="Faturamento" fill="#4ade80" radius={[4, 4, 0, 0]} maxBarSize={40} />
+          <Bar dataKey="valor" name="Faturamento" fill="#4ade80" radius={[4, 4, 0, 0]} maxBarSize={40} yAxisId="left" />
           <Line
             type="monotone"
             dataKey="crescimento"
@@ -108,6 +124,7 @@ export function FaturamentoChart({ data }: { data: { mes: string; valor: number;
             stroke="#f97316"
             strokeWidth={2}
             dot={{ fill: "#f97316", r: 3 }}
+            yAxisId="right"
           />
         </ComposedChart>
       </ResponsiveContainer>

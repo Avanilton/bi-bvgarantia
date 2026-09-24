@@ -87,11 +87,7 @@ export async function GET(req: NextRequest) {
         encargo: true,
         tarifaBoleto: true,
       },
-      where: {
-        tipo: "RECEITAS_VAR",
-        ...condoWhere,
-        mesRef: { in: meses6 },
-      },
+      where: buildWhere("RECEITAS_VAR"),
     });
 
     // Agrega em totais para o gráfico de pizza

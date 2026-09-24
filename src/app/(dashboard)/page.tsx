@@ -131,42 +131,50 @@ function DashboardContent() {
           </p>
         </div>
 
-        <div className="flex items-center gap-3">
-          {/* Status do último snapshot */}
+        <div className="flex flex-col items-end gap-1">
+          <div className="flex items-center gap-3">
+            {/* Status do último snapshot */}
+            {snapLabel && (
+              <div
+                className="flex items-center gap-1.5 text-xs rounded-full px-3 py-1.5"
+                style={{
+                  background: data.snapStatus === "OK" ? "#f0fdf4" : "#fef2f2",
+                  color: data.snapStatus === "OK" ? "#16a34a" : "#dc2626",
+                }}
+              >
+                <Camera size={12} />
+                Foto: {snapLabel}
+              </div>
+            )}
+
+            {/* Atualizado em */}
+            {updatedAt && (
+              <div
+                className="flex items-center gap-1.5 text-xs"
+                style={{ color: "#9ca3af" }}
+              >
+                <Clock size={12} />
+                {updatedAt.toLocaleTimeString("pt-BR", { hour: "2-digit", minute: "2-digit" })}
+              </div>
+            )}
+
+            {/* Botão refresh */}
+            <button
+              onClick={fetchData}
+              disabled={loading}
+              className="btn-secondary"
+              style={{ padding: "0.4rem 0.75rem", fontSize: "0.78rem" }}
+            >
+              <RefreshCw size={13} className={loading ? "animate-spin" : ""} />
+              Atualizar
+            </button>
+          </div>
+          
           {snapLabel && (
-            <div
-              className="flex items-center gap-1.5 text-xs rounded-full px-3 py-1.5"
-              style={{
-                background: data.snapStatus === "OK" ? "#f0fdf4" : "#fef2f2",
-                color: data.snapStatus === "OK" ? "#16a34a" : "#dc2626",
-              }}
-            >
-              <Camera size={12} />
-              Foto: {snapLabel}
-            </div>
+            <span className="text-[10px] text-gray-500 italic max-w-[320px] text-right mt-1">
+              Podem ocorrer diferenças devido ao tempo de atualização entre o banco de dados real e a API
+            </span>
           )}
-
-          {/* Atualizado em */}
-          {updatedAt && (
-            <div
-              className="flex items-center gap-1.5 text-xs"
-              style={{ color: "#9ca3af" }}
-            >
-              <Clock size={12} />
-              {updatedAt.toLocaleTimeString("pt-BR", { hour: "2-digit", minute: "2-digit" })}
-            </div>
-          )}
-
-          {/* Botão refresh */}
-          <button
-            onClick={fetchData}
-            disabled={loading}
-            className="btn-secondary"
-            style={{ padding: "0.4rem 0.75rem", fontSize: "0.78rem" }}
-          >
-            <RefreshCw size={13} className={loading ? "animate-spin" : ""} />
-            Atualizar
-          </button>
         </div>
       </div>
 
@@ -183,7 +191,7 @@ function DashboardContent() {
           value={data.cards.recebimento}
           icon={CheckCircle2}
           colorGreen
-          subtitle="Boletos pagos até ontem"
+          subtitle="Boletos pagos no mês"
           loading={loading}
           onClick={() => setModalTipo("RECEBIMENTO")}
         />
