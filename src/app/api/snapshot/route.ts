@@ -32,6 +32,7 @@ export async function POST() {
        WHERE b.idEmpresa  = ?
          AND b.pago       = 0
          AND b.cancelado  = 0
+         AND b.valorparc  > 0
          AND b.dataVecto  < CURDATE()
        GROUP BY b.idimovel, i.nomefantasia, mesRef
        HAVING valor > 0`,
@@ -42,7 +43,7 @@ export async function POST() {
     const [recRows] = await pool.query(
       `SELECT b.idimovel, i.nomefantasia,
               DATE_FORMAT(b.dataPgto, '%Y-%m')    AS mesRef,
-              SUM(IFNULL(b.total, 0))             AS valor,
+              SUM(IFNULL(b.valorPago, 0))         AS valor,
               SUM(IFNULL(b.juros, 0))             AS juros,
               SUM(IFNULL(b.correcao, 0))          AS correcao,
               SUM(IFNULL(b.multa, 0))             AS multa,
@@ -51,11 +52,11 @@ export async function POST() {
        FROM TBBOLETO b
        JOIN TBIMOVEL i ON i.idEmpresa = b.idEmpresa AND i.idimovel = b.idimovel
        WHERE b.idEmpresa  = ?
-         AND b.pago       = 1
          AND b.cancelado  = 0
+         AND b.valorPago  > 0
          AND b.dataPgto   IS NOT NULL
          AND b.dataPgto   >= DATE_FORMAT(NOW(), '%Y-%m-01')
-         AND b.dataPgto   <= DATE_SUB(CURDATE(), INTERVAL 1 DAY)
+         AND b.dataPgto   <= CURDATE()
        GROUP BY b.idimovel, i.nomefantasia, mesRef
        HAVING valor > 0`,
       [ID_EMPRESA]
@@ -77,6 +78,7 @@ export async function POST() {
          AND b.pago       = 0
          AND b.cancelado  = 0
          AND b.origem     = 6
+         AND b.valorparc  > 0
          AND b.dataVecto  < CURDATE()
        GROUP BY b.idimovel, i.nomefantasia, mesRef
        HAVING valor > 0`,
@@ -99,6 +101,7 @@ export async function POST() {
          AND b.pago       = 0
          AND b.cancelado  = 0
          AND b.origem     = 5
+         AND b.valorparc  > 0
          AND b.dataVecto  < CURDATE()
        GROUP BY b.idimovel, i.nomefantasia, mesRef
        HAVING valor > 0`,
