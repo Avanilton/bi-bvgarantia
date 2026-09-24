@@ -30,12 +30,22 @@ export function toMesRef(date: Date): string {
 }
 
 // Gera os últimos N meses como strings "YYYY-MM"
-export function ultimos6Meses(): string[] {
+export function ultimos6Meses(mesFim?: string | null): string[] {
   const meses: string[] = [];
+  let currentYear, currentMonth;
+  
+  if (mesFim) {
+    const [y, m] = mesFim.split("-");
+    currentYear = parseInt(y, 10);
+    currentMonth = parseInt(m, 10) - 1; // Mês 0-indexado
+  } else {
+    const now = new Date();
+    currentYear = now.getFullYear();
+    currentMonth = now.getMonth();
+  }
+
   for (let i = 5; i >= 0; i--) {
-    const d = new Date();
-    d.setDate(1);
-    d.setMonth(d.getMonth() - i);
+    const d = new Date(currentYear, currentMonth - i, 1);
     meses.push(toMesRef(d));
   }
   return meses;

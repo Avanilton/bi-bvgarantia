@@ -49,7 +49,7 @@ export async function GET(req: NextRequest) {
     ]);
 
     // ─── Gráfico: Recebimento 6 meses ───────────────────────────────────────
-    const meses6 = ultimos6Meses();
+    const meses6 = ultimos6Meses(mesFim);
     const recMesRows = await prisma.kpiDiario.groupBy({
       by: ["mesRef"],
       _sum: { valor: true },
