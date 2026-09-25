@@ -3,7 +3,7 @@
 import {
   BarChart, Bar, XAxis, YAxis, Tooltip, ResponsiveContainer,
   LineChart, Line, CartesianGrid, Legend,
-  ComposedChart, PieChart, Pie, Cell,
+  ComposedChart, PieChart, Pie, Cell, LabelList
 } from "recharts";
 import { formatBRL, formatPct } from "@/lib/utils";
 
@@ -72,7 +72,14 @@ export function RecebimentoChart({ data }: { data: { mes: string; valor: number;
           />
           <Tooltip content={<CustomTooltip />} />
           <Legend wrapperStyle={{ fontSize: 11, color: "#6b7280" }} />
-          <Bar dataKey="valor" name="Recebido" fill="#f97316" radius={[4, 4, 0, 0]} maxBarSize={40} yAxisId="left" />
+          <Bar dataKey="valor" name="Recebido" fill="#f97316" radius={[4, 4, 0, 0]} maxBarSize={40} yAxisId="left">
+            <LabelList
+              dataKey="valor"
+              position="top"
+              formatter={(v: number) => Math.floor(v / 1000).toLocaleString("pt-BR")}
+              style={{ fontSize: 10, fill: "#6b7280" }}
+            />
+          </Bar>
           <Line
             type="monotone"
             dataKey="crescimento"
