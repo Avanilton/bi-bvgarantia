@@ -76,7 +76,8 @@ export function RecebimentoChart({ data }: { data: { mes: string; valor: number;
             <LabelList
               dataKey="valor"
               position="top"
-              formatter={(v: number | string) => {
+              formatter={(v: any) => {
+                if (v == null) return "";
                 const num = Number(v);
                 return isNaN(num) ? "" : Math.floor(num / 1000).toLocaleString("pt-BR");
               }}
