@@ -52,7 +52,7 @@ export function RecebimentoChart({ data }: { data: { mes: string; valor: number;
         Recebimento — Últimos 6 Meses
       </h3>
       <ResponsiveContainer width="100%" height={220}>
-        <ComposedChart data={data} margin={{ left: 0, right: 8 }}>
+        <ComposedChart data={data} margin={{ top: 20, left: 0, right: 8 }}>
           <CartesianGrid strokeDasharray="3 3" stroke="#f3f4f6" />
           <XAxis dataKey="mes" tick={{ fontSize: 11, fill: "#9ca3af" }} />
           <YAxis
@@ -76,8 +76,11 @@ export function RecebimentoChart({ data }: { data: { mes: string; valor: number;
             <LabelList
               dataKey="valor"
               position="top"
-              formatter={(v: number) => Math.floor(v / 1000).toLocaleString("pt-BR")}
-              style={{ fontSize: 10, fill: "#6b7280" }}
+              formatter={(v: number | string) => {
+                const num = Number(v);
+                return isNaN(num) ? "" : Math.floor(num / 1000).toLocaleString("pt-BR");
+              }}
+              style={{ fontSize: 10, fill: "#6b7280", fontWeight: 600 }}
             />
           </Bar>
           <Line
