@@ -187,7 +187,7 @@ function DashboardContent() {
               style={{ padding: "0.4rem 0.75rem", fontSize: "0.78rem", background: "#fff7ed", color: "#ea580c", borderColor: "#fdba74" }}
             >
               <Camera size={13} className={snapshotLoading ? "animate-spin" : ""} />
-              Tirar Foto do Banco
+              Atualizar dados do banco
             </button>
 
             <button
@@ -200,7 +200,7 @@ function DashboardContent() {
               Atualizar Tela
             </button>
           </div>
-          
+
           {snapLabel && (
             <span className="text-[10px] text-gray-500 italic max-w-[320px] text-right mt-1">
               Podem ocorrer diferenças devido ao tempo de atualização entre o banco de dados real e a API
