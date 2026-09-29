@@ -51,6 +51,47 @@ export function ultimos6Meses(mesFim?: string | null): string[] {
   return meses;
 }
 
+// Retorna todos os meses entre mesInicio e mesFim. 
+// Caso algum falte ou o período seja inválido, retorna os últimos 6 meses.
+export function obterIntervaloMeses(mesInicio: string | null, mesFim: string | null): string[] {
+  if (!mesInicio && !mesFim) {
+    return ultimos6Meses();
+  }
+  
+  if (!mesInicio) return ultimos6Meses(mesFim);
+  
+  if (!mesFim) {
+    // Se só tem início, gera 6 meses a partir dele para a frente, ou até o atual
+    const [yI, mI] = mesInicio.split("-").map(Number);
+    const start = new Date(yI, mI - 1, 1);
+    const now = new Date();
+    const meses = [];
+    while (start <= now && meses.length < 24) {
+      meses.push(toMesRef(start));
+      start.setMonth(start.getMonth() + 1);
+    }
+    return meses.length > 0 ? meses : ultimos6Meses();
+  }
+
+  const [yI, mI] = mesInicio.split("-").map(Number);
+  const [yF, mF] = mesFim.split("-").map(Number);
+  
+  const start = new Date(yI, mI - 1, 1);
+  const end = new Date(yF, mF - 1, 1);
+  
+  if (start > end) return ultimos6Meses(mesFim); // Se inicio for maior q fim
+  
+  const meses = [];
+  const cur = new Date(start);
+  
+  while (cur <= end && meses.length < 60) { // Limitado a 5 anos para segurança
+    meses.push(toMesRef(cur));
+    cur.setMonth(cur.getMonth() + 1);
+  }
+  
+  return meses;
+}
+
 // Label amigável de "YYYY-MM" -> "Abr/26"
 export function mesLabel(mesRef: string): string {
   const [year, month] = mesRef.split("-");

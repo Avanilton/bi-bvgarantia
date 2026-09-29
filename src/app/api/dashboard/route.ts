@@ -1,6 +1,6 @@
 import { NextRequest, NextResponse } from "next/server";
 import { prisma } from "@/lib/prisma";
-import { ultimos6Meses, mesLabel, toMesRef } from "@/lib/utils";
+import { ultimos6Meses, mesLabel, toMesRef, obterIntervaloMeses } from "@/lib/utils";
 
 // GET /api/dashboard?condominio=X&dataInicio=YYYY-MM-DD&dataFim=YYYY-MM-DD
 export async function GET(req: NextRequest) {
@@ -52,34 +52,34 @@ export async function GET(req: NextRequest) {
       prisma.kpiDiario.aggregate({ _sum: { valor: true }, where: buildWhere("AMIGAVEL") }),
     ]);
 
-    // ─── Gráfico: Recebimento 6 meses ───────────────────────────────────────
-    const meses6 = ultimos6Meses(mesFim);
+    // ─── Gráfico: Recebimento & Faturamento (por meses do intervalo) ───────
+    const mesesFiltrados = obterIntervaloMeses(mesInicio, mesFim);
     const recMesRows = await prisma.kpiDiario.groupBy({
       by: ["mesRef"],
       _sum: { valor: true },
       where: {
         tipo: "RECEBIMENTO",
         ...condoWhere,
-        mesRef: { in: meses6 },
+        mesRef: { in: mesesFiltrados },
       },
     });
 
     const recMesMap = new Map(recMesRows.map((r) => [r.mesRef, r._sum.valor ?? 0]));
-    const recebimento6Meses = meses6.map((m) => ({
+    const recebimentoMesesLista = mesesFiltrados.map((m) => ({
       mes: mesLabel(m),
       valor: recMesMap.get(m) ?? 0,
     }));
 
     // Adiciona % crescimento
-    const rec6ComCrescimento = recebimento6Meses.map((item, i) => {
+    const recComCrescimento = recebimentoMesesLista.map((item, i) => {
       if (i === 0) return { ...item, crescimento: 0 };
-      const prev = recebimento6Meses[i - 1].valor;
+      const prev = recebimentoMesesLista[i - 1].valor;
       const crescimento = prev > 0 ? Number((((item.valor - prev) / prev) * 100).toFixed(1)) : 0;
       return { ...item, crescimento };
     });
 
     // ─── Gráfico: Faturamento & Crescimento (mesmos dados de recebimento) ───
-    const faturamento6Meses = rec6ComCrescimento;
+    const faturamentoMesesLista = recComCrescimento;
 
     // ─── Gráfico: Receitas Variáveis ─────────────────────────────────────────
     const recVarWhere = buildWhere("RECEITAS_VAR");
@@ -121,8 +121,8 @@ export async function GET(req: NextRequest) {
         juridicos: jurSum._sum.valor ?? 0,
         amigavel: amiSum._sum.valor ?? 0,
       },
-      recebimento6Meses: rec6ComCrescimento,
-      faturamento6Meses,
+      recebimento6Meses: recComCrescimento,
+      faturamento6Meses: faturamentoMesesLista,
       receitasVar,
       ultimoSnapshot: ultimoSnap?.criadoEm ?? null,
       snapStatus: ultimoSnap?.status ?? null,
