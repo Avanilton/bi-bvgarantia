@@ -47,8 +47,10 @@ export async function GET(req: NextRequest) {
       }
     }
 
-    if (mesInicio && mesFim) {
-      where.mesRef = { gte: mesInicio, lte: mesFim };
+    if (mesInicio || mesFim) {
+      where.mesRef = {};
+      if (mesInicio) where.mesRef.gte = mesInicio;
+      if (mesFim) where.mesRef.lte = mesFim;
     }
 
     // 2. Agrupa valores gravados no PostgreSQL por condomínio

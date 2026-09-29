@@ -27,11 +27,12 @@ export async function GET(req: NextRequest) {
 
   const condoWhere = parseCondoFilter();
 
-  // Constrói filtro base pelo mesRef do cache
   const buildWhere = (tipo: string) => {
     const where: any = { tipo, ...condoWhere };
-    if (mesInicio && mesFim) {
-      where.mesRef = { gte: mesInicio, lte: mesFim };
+    if (mesInicio || mesFim) {
+      where.mesRef = {};
+      if (mesInicio) where.mesRef.gte = mesInicio;
+      if (mesFim) where.mesRef.lte = mesFim;
     }
     return where;
   };
