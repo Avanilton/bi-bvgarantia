@@ -41,6 +41,7 @@ function DashboardContent() {
   const searchParams = useSearchParams();
   const [data, setData] = useState<DashData>(EMPTY);
   const [loading, setLoading] = useState(true);
+  const [snapshotLoading, setSnapshotLoading] = useState(false);
   const [updatedAt, setUpdatedAt] = useState<Date | null>(null);
 
   const [modalTipo, setModalTipo] = useState<
@@ -80,6 +81,26 @@ function DashboardContent() {
       setLoading(false);
     }
   }, [searchParams]);
+
+  const handleForceSnapshot = async () => {
+    if (confirm("Deseja extrair uma nova foto do banco de dados completo? Isso pode demorar alguns segundos.")) {
+      setSnapshotLoading(true);
+      try {
+        const res = await fetch("/api/snapshot", { method: "POST" });
+        if (res.ok) {
+          alert("Foto do banco gerada com sucesso!");
+          await fetchData();
+        } else {
+          alert("Ocorreu um erro ao gerar a foto do banco.");
+        }
+      } catch (err) {
+        console.error(err);
+        alert("Erro ao acionar a API de snapshot.");
+      } finally {
+        setSnapshotLoading(false);
+      }
+    }
+  };
 
   useEffect(() => {
     fetchData();
@@ -158,15 +179,25 @@ function DashboardContent() {
               </div>
             )}
 
-            {/* Botão refresh */}
+            {/* Botões de Ação */}
+            <button
+              onClick={handleForceSnapshot}
+              disabled={snapshotLoading || loading}
+              className="btn-secondary"
+              style={{ padding: "0.4rem 0.75rem", fontSize: "0.78rem", background: "#fff7ed", color: "#ea580c", borderColor: "#fdba74" }}
+            >
+              <Camera size={13} className={snapshotLoading ? "animate-spin" : ""} />
+              Tirar Foto do Banco
+            </button>
+
             <button
               onClick={fetchData}
-              disabled={loading}
+              disabled={loading || snapshotLoading}
               className="btn-secondary"
               style={{ padding: "0.4rem 0.75rem", fontSize: "0.78rem" }}
             >
               <RefreshCw size={13} className={loading ? "animate-spin" : ""} />
-              Atualizar
+              Atualizar Tela
             </button>
           </div>
           

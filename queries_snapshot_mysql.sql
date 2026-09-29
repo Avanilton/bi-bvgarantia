@@ -36,7 +36,6 @@ WHERE b.idEmpresa  = ?
   AND b.cancelado  = 0
   AND b.valorPago  > 0
   AND b.dataPgto   IS NOT NULL
-  AND b.dataPgto   >= DATE_SUB(DATE_FORMAT(NOW(), '%Y-%m-01'), INTERVAL 5 MONTH)
   AND b.dataPgto   <= CURDATE()
 GROUP BY b.idimovel, i.nomefantasia, mesRef
 HAVING valor > 0;
