@@ -81,6 +81,11 @@ export async function GET(req: NextRequest) {
     const faturamento6Meses = rec6ComCrescimento;
 
     // ─── Gráfico: Receitas Variáveis ─────────────────────────────────────────
+    const recVarWhere = buildWhere("RECEITAS_VAR");
+    if (!mesInicio && !mesFim) {
+      recVarWhere.mesRef = toMesRef(new Date());
+    }
+
     const recVarRows = await prisma.kpiDiario.groupBy({
       by: ["mesRef"],
       _sum: {
@@ -90,7 +95,7 @@ export async function GET(req: NextRequest) {
         encargo: true,
         tarifaBoleto: true,
       },
-      where: buildWhere("RECEITAS_VAR"),
+      where: recVarWhere,
     });
 
     // Agrega em totais para o gráfico de pizza
