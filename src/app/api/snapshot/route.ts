@@ -32,10 +32,8 @@ export async function POST() {
        WHERE b.idEmpresa  = ?
          AND b.pago       = 0
          AND b.cancelado  = 0
-         AND b.valorparc  > 0
          AND b.dataVecto  < CURDATE()
-       GROUP BY b.idimovel, i.nomefantasia, mesRef
-       HAVING valor > 0`,
+       GROUP BY b.idimovel, i.nomefantasia, mesRef`,
       [ID_EMPRESA]
     ) as any[];
 
@@ -78,10 +76,8 @@ export async function POST() {
          AND b.pago       = 0
          AND b.cancelado  = 0
          AND b.origem     = 6
-         AND b.valorparc  > 0
          AND b.dataVecto  < CURDATE()
-       GROUP BY b.idimovel, i.nomefantasia, mesRef
-       HAVING valor > 0`,
+       GROUP BY b.idimovel, i.nomefantasia, mesRef`,
       [ID_EMPRESA]
     ) as any[];
 
@@ -101,10 +97,8 @@ export async function POST() {
          AND b.pago       = 0
          AND b.cancelado  = 0
          AND b.origem     = 5
-         AND b.valorparc  > 0
          AND b.dataVecto  < CURDATE()
-       GROUP BY b.idimovel, i.nomefantasia, mesRef
-       HAVING valor > 0`,
+       GROUP BY b.idimovel, i.nomefantasia, mesRef`,
       [ID_EMPRESA]
     ) as any[];
 

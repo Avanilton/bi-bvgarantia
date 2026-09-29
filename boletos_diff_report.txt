@@ -1,0 +1,273 @@
+--- BOLETOS EXCLUSIVOS DO CSV ---
+ID: 1941988 | Condo: 10-PARQUE CORAL | Valor: 762.00
+ID: 1965096 | Condo: 86-ALEXANDRE COELHO (PALHOÇA- SC) | Valor: 777.30
+ID: 2032326 | Condo: 85-FIRENZE | Valor: 976.00
+ID: 2047270 | Condo: 321-PORTAO CENTER | Valor: 1292.33
+ID: 2047383 | Condo: 52-RUBIA KAISER B (JOINVILLE) | Valor: 300.00
+ID: 2261862 | Condo: 172-PARQUE BELLE NATURE | Valor: 563.89
+ID: 2335149 | Condo: 133-FLAMBOYANT | Valor: 1090.79
+ID: 2347236 | Condo: 135-VITTACE GUARAPUAVA | Valor: 246.00
+ID: 2363104 | Condo: 52-RUBIA KAISER B (JOINVILLE) | Valor: 390.00
+ID: 2374161 | Condo: 239-BELA VIDA II | Valor: 419.52
+ID: 2508603 | Condo: 164-AMEC VILLE JACARANDA | Valor: 399.99
+ID: 2554179 | Condo: 172-PARQUE BELLE NATURE | Valor: 887.62
+ID: 2856067 | Condo: 93-VITTACE GIANA | Valor: 1700.00
+ID: 2876974 | Condo: 310-BOSQUE DOS IPES | Valor: 448.32
+ID: 2961306 | Condo: 64-IRMA MARIA (JOINVILLE ) | Valor: 960.58
+ID: 2995207 | Condo: 347-COLINAS DE SAO PEDRO | Valor: 368.25
+ID: 3016877 | Condo: 252-ANDALUZIA | Valor: 692.82
+ID: 3075501 | Condo: 349-CAMPOS DO SUL | Valor: 264.28
+ID: 3190316 | Condo: 118-PORTO OLIVIA (PONTA GROSSA) | Valor: 1710.28
+ID: 3248937 | Condo: 275-RESERVA DO TINGUA | Valor: 570.59
+ID: 3286949 | Condo: 368-BOICY 2 | Valor: 529.19
+ID: 3355996 | Condo: 250-INOVA UVARANAS | Valor: 797.99
+ID: 3370652 | Condo: 361-VALE DOS CORAIS | Valor: 584.92
+ID: 3377970 | Condo: 89-MARLENE MOREIRA (PALHOÇA-SC) | Valor: 370.20
+ID: 3378258 | Condo: 258-DEZ PORTAL | Valor: 856.89
+ID: 3438808 | Condo: 5-VILLAGE PR | Valor: 2165.48
+ID: 3441741 | Condo: 325-TRILHAS DO SOL | Valor: 424.99
+ID: 3465738 | Condo: 325-TRILHAS DO SOL | Valor: 639.56
+ID: 3471434 | Condo: 307-RESIDENCIAL ENCANTO | Valor: 572.30
+ID: 3516085 | Condo: 149-UNIQUE FONTESVILLE | Valor: 992.17
+ID: 3569244 | Condo: 325-TRILHAS DO SOL | Valor: 597.05
+ID: 3571871 | Condo: 307-RESIDENCIAL ENCANTO | Valor: 1189.30
+ID: 3571895 | Condo: 307-RESIDENCIAL ENCANTO | Valor: 677.22
+ID: 3573756 | Condo: 201-PARQUE CERRADO I | Valor: 887.40
+ID: 3576666 | Condo: 290-GRAN ACROPOLIS I | Valor: 350.84
+ID: 3577692 | Condo: 177-FLOR DE LIS | Valor: 691.01
+ID: 3579277 | Condo: 225-SOLARIS RIO AQUARIUS | Valor: 979.40
+ID: 3648072 | Condo: 290-GRAN ACROPOLIS I | Valor: 620.52
+ID: 3669322 | Condo: 265-SOLAR DO OESTE II | Valor: 853.32
+ID: 3672979 | Condo: 218-SOLAR DOS COQUEIROS | Valor: 779.96
+ID: 3675968 | Condo: 265-SOLAR DO OESTE II | Valor: 747.81
+ID: 3676879 | Condo: 226-VILLA RICA | Valor: 543.78
+ID: 3683142 | Condo: 395-VIVA VIDA ZONA OESTE | Valor: 559.27
+ID: 3688970 | Condo: 312-VITORIA SAO LUIS | Valor: 445.46
+ID: 3689803 | Condo: 241-PARK CLUB SHOPPING | Valor: 638.31
+ID: 3695798 | Condo: 364-PORTO DE NAPOLIS | Valor: 904.78
+ID: 3726570 | Condo: 339-PISTOIA I | Valor: 465.23
+ID: 3732149 | Condo: 149-UNIQUE FONTESVILLE | Valor: 780.92
+ID: 3732990 | Condo: 211-PONTAL DA SERRA | Valor: 580.28
+ID: 3750748 | Condo: 327-PARQUE VILLE MUNICIPAL | Valor: 537.72
+ID: 3765797 | Condo: 184-RESIDENCIAL LA SENA | Valor: 965.02
+ID: 3772432 | Condo: 114-PARQUE ATUALLE | Valor: 1196.67
+ID: 3776346 | Condo: 265-SOLAR DO OESTE II | Valor: 695.30
+ID: 3785391 | Condo: 181-ECOVILLE LESTE | Valor: 356.56
+ID: 3788082 | Condo: 312-VITORIA SAO LUIS | Valor: 584.29
+ID: 3789395 | Condo: 364-PORTO DE NAPOLIS | Valor: 1272.25
+ID: 3798905 | Condo: 60-DUETTO (PONTA GROSSA) | Valor: 962.32
+ID: 3825799 | Condo: 211-PONTAL DA SERRA | Valor: 690.46
+ID: 3848724 | Condo: 86-ALEXANDRE COELHO (PALHOÇA- SC) | Valor: 1746.49
+ID: 3857091 | Condo: 339-PISTOIA I | Valor: 489.36
+ID: 3870065 | Condo: 31-MORADAS DO CAMPO | Valor: 1005.07
+ID: 3895485 | Condo: 312-VITORIA SAO LUIS | Valor: 456.14
+ID: 3912718 | Condo: 293-ENGENHO NOVO | Valor: 1148.05
+ID: 3913319 | Condo: 289-SPLENDOR | Valor: 444.33
+ID: 4027055 | Condo: 339-PISTOIA I | Valor: 315.20
+ID: 4027476 | Condo: 304-BELLA VITTA CLUB IV | Valor: 477.06
+ID: 4038908 | Condo: 339-PISTOIA I | Valor: 351.17
+ID: 4061832 | Condo: 249-PARQUE CERRADO III | Valor: 1026.22
+ID: 4083054 | Condo: 312-VITORIA SAO LUIS | Valor: 399.14
+ID: 4093765 | Condo: 368-BOICY 2 | Valor: 202.12
+ID: 4119157 | Condo: 169-VITTACE JARDIM CARVALHO | Valor: 748.68
+ID: 4142608 | Condo: 265-SOLAR DO OESTE II | Valor: 691.51
+ID: 4170608 | Condo: 438-JOAO DE BARRO I | Valor: 401.90
+ID: 4173718 | Condo: 273-RIVIERA | Valor: 955.61
+ID: 4184100 | Condo: 364-PORTO DE NAPOLIS | Valor: 747.83
+ID: 4203789 | Condo: 354-MARIA GONCALVES | Valor: 409.29
+ID: 4238020 | Condo: 126-ITOUPAVAZINHA | Valor: 224.29
+ID: 4248576 | Condo: 312-VITORIA SAO LUIS | Valor: 641.67
+ID: 4250258 | Condo: 430-PLAZA DAS FLORES II | Valor: 247.97
+ID: 4252291 | Condo: 430-PLAZA DAS FLORES II | Valor: 268.89
+ID: 4319834 | Condo: 184-RESIDENCIAL LA SENA | Valor: 1100.62
+ID: 4370786 | Condo: 26-COSENZA | Valor: 1735.11
+ID: 4376183 | Condo: 419-PLAZA DAS FLORES III | Valor: 227.66
+ID: 4376777 | Condo: 179-DELTAVILLE | Valor: 433.71
+ID: 4450029 | Condo: 154-RESERVA DO NORTE I | Valor: 425.48
+ID: 4453243 | Condo: 368-BOICY 2 | Valor: 608.36
+ID: 4458294 | Condo: 131-GARDEN VILLAGE | Valor: 1362.80
+ID: 4471936 | Condo: 265-SOLAR DO OESTE II | Valor: 485.66
+ID: 4481179 | Condo: 312-VITORIA SAO LUIS | Valor: 497.27
+ID: 4488055 | Condo: 275-RESERVA DO TINGUA | Valor: 341.71
+ID: 4496281 | Condo: 84-VITTA CLUB ( ITAJAI) | Valor: 823.73
+ID: 4537051 | Condo: 340-CORTINA D AMPEZZO | Valor: 395.34
+ID: 4562000 | Condo: 64-IRMA MARIA (JOINVILLE ) | Valor: 1050.47
+ID: 4572900 | Condo: 638-VILA CERRADO I | Valor: 345.86
+ID: 4666825 | Condo: 211-PONTAL DA SERRA | Valor: 657.66
+ID: 4674050 | Condo: 89-MARLENE MOREIRA (PALHOÇA-SC) | Valor: 1543.29
+ID: 4717458 | Condo: 368-BOICY 2 | Valor: 304.55
+ID: 4750645 | Condo: 312-VITORIA SAO LUIS | Valor: 559.61
+ID: 4765007 | Condo: 363-VILLAGE LA BELLE | Valor: 629.30
+ID: 4812192 | Condo: 304-BELLA VITTA CLUB IV | Valor: 492.06
+ID: 4872537 | Condo: 218-SOLAR DOS COQUEIROS | Valor: 479.29
+ID: 4874604 | Condo: 341-PALAZZO VERONA | Valor: 1317.60
+ID: 4940164 | Condo: 118-PORTO OLIVIA (PONTA GROSSA) | Valor: 220.70
+ID: 4943080 | Condo: 845-COMPLETO GUANABARA | Valor: 308.66
+ID: 4947860 | Condo: 456-DOM BOSCO | Valor: 1015.92
+ID: 4958762 | Condo: 592-TORRES DO MEIER | Valor: 642.51
+ID: 4971290 | Condo: 762-TERRANOVA | Valor: 160.93
+ID: 4979377 | Condo: 435-VIDA NOVA II | Valor: 360.93
+ID: 4986838 | Condo: 178-NEAR LOURENZZO | Valor: 435.75
+ID: 4986927 | Condo: 178-NEAR LOURENZZO | Valor: 317.43
+ID: 4995277 | Condo: 63-RUBIA KAISER A (JOINVILLE ) | Valor: 996.72
+ID: 5004509 | Condo: 439-PARQUE DAS AGUAS | Valor: 242.16
+ID: 5006356 | Condo: 630-VILA DAS CEREJEIRAS | Valor: 300.56
+ID: 5008244 | Condo: 364-PORTO DE NAPOLIS | Valor: 513.94
+ID: 5019307 | Condo: 355-VIDA ALEGRE SARANDI | Valor: 272.65
+ID: 5019569 | Condo: 355-VIDA ALEGRE SARANDI | Valor: 235.36
+ID: 5040275 | Condo: 67-PARQUE DOS INGLESES (PONTA GROSSA) | Valor: 26.33
+ID: 7448688 | Condo: 363-VILLAGE LA BELLE | Valor: 855.77
+
+--- BOLETOS EXCLUSIVOS DO PDF ---
+ID: 4699119 | Valor Extraido: 0.00
+ID: 5072521 | Valor Extraido: 0.00
+ID: 5226808 | Valor Extraido: 0.00
+ID: 4942184 | Valor Extraido: 0.00
+ID: 5081025 | Valor Extraido: 0.00
+ID: 4962554 | Valor Extraido: 0.00
+ID: 5014704 | Valor Extraido: 0.00
+ID: 5036494 | Valor Extraido: 0.00
+ID: 4984928 | Valor Extraido: 0.00
+ID: 4940056 | Valor Extraido: 0.00
+ID: 4931588 | Valor Extraido: 0.00
+ID: 4961580 | Valor Extraido: 0.00
+ID: 4976414 | Valor Extraido: 0.00
+ID: 5032101 | Valor Extraido: 0.00
+ID: 5032098 | Valor Extraido: 0.00
+ID: 5079379 | Valor Extraido: 0.00
+ID: 4935573 | Valor Extraido: 0.00
+ID: 5048461 | Valor Extraido: 0.00
+ID: 4848203 | Valor Extraido: 0.00
+ID: 5003013 | Valor Extraido: 0.00
+ID: 4113308 | Valor Extraido: 0.00
+ID: 4445371 | Valor Extraido: 0.00
+ID: 5226807 | Valor Extraido: 0.00
+ID: 5010863 | Valor Extraido: 0.00
+ID: 4838712 | Valor Extraido: 0.00
+ID: 4838713 | Valor Extraido: 0.00
+ID: 4748714 | Valor Extraido: 0.00
+ID: 5006298 | Valor Extraido: 0.00
+ID: 5078875 | Valor Extraido: 0.00
+ID: 5045481 | Valor Extraido: 0.00
+ID: 5013923 | Valor Extraido: 0.00
+ID: 4466271 | Valor Extraido: 0.00
+ID: 4936805 | Valor Extraido: 0.00
+ID: 5012557 | Valor Extraido: 0.00
+ID: 5038480 | Valor Extraido: 0.00
+ID: 4968598 | Valor Extraido: 0.00
+ID: 2865527 | Valor Extraido: 0.00
+ID: 5090902 | Valor Extraido: 0.00
+ID: 5090901 | Valor Extraido: 0.00
+ID: 5013615 | Valor Extraido: 0.00
+ID: 4891039 | Valor Extraido: 0.00
+ID: 4891040 | Valor Extraido: 0.00
+ID: 5054163 | Valor Extraido: 0.00
+ID: 5068499 | Valor Extraido: 0.00
+ID: 5068500 | Valor Extraido: 0.00
+ID: 4937489 | Valor Extraido: 0.00
+ID: 4759832 | Valor Extraido: 0.00
+ID: 4792449 | Valor Extraido: 0.00
+ID: 4753837 | Valor Extraido: 0.00
+ID: 3877429 | Valor Extraido: 0.00
+ID: 5090928 | Valor Extraido: 0.00
+ID: 4991570 | Valor Extraido: 0.00
+ID: 4996482 | Valor Extraido: 0.00
+ID: 4991833 | Valor Extraido: 0.00
+ID: 5050049 | Valor Extraido: 0.00
+ID: 5030252 | Valor Extraido: 0.00
+ID: 4923107 | Valor Extraido: 0.00
+ID: 4982222 | Valor Extraido: 0.00
+ID: 4997408 | Valor Extraido: 0.00
+ID: 4982976 | Valor Extraido: 0.00
+ID: 4947977 | Valor Extraido: 0.00
+ID: 5097999 | Valor Extraido: 0.00
+ID: 5097994 | Valor Extraido: 0.00
+ID: 4916250 | Valor Extraido: 0.00
+ID: 5039836 | Valor Extraido: 3428.85
+ID: 5005165 | Valor Extraido: 0.00
+ID: 4991533 | Valor Extraido: 0.00
+ID: 5053500 | Valor Extraido: 0.00
+ID: 4483631 | Valor Extraido: 0.00
+ID: 4967468 | Valor Extraido: 0.00
+ID: 5021915 | Valor Extraido: 0.00
+ID: 5012498 | Valor Extraido: 0.00
+ID: 5037805 | Valor Extraido: 0.00
+ID: 4825293 | Valor Extraido: 0.00
+ID: 5024903 | Valor Extraido: 0.00
+ID: 4284165 | Valor Extraido: 0.00
+ID: 5056223 | Valor Extraido: 0.00
+ID: 4586390 | Valor Extraido: 0.00
+ID: 4875217 | Valor Extraido: 0.00
+ID: 4740332 | Valor Extraido: 0.00
+ID: 5060022 | Valor Extraido: 0.00
+ID: 5115386 | Valor Extraido: 0.00
+ID: 4933188 | Valor Extraido: 0.00
+ID: 4955538 | Valor Extraido: 0.00
+ID: 4977886 | Valor Extraido: 0.00
+ID: 4668380 | Valor Extraido: 0.00
+ID: 4668381 | Valor Extraido: 0.00
+ID: 4922579 | Valor Extraido: 0.00
+ID: 5046845 | Valor Extraido: 0.00
+ID: 4572884 | Valor Extraido: 0.00
+ID: 5086712 | Valor Extraido: 0.00
+ID: 4155821 | Valor Extraido: 0.00
+ID: 5021246 | Valor Extraido: 0.00
+ID: 5002992 | Valor Extraido: 0.00
+ID: 4914009 | Valor Extraido: 0.00
+ID: 5014158 | Valor Extraido: 0.00
+ID: 4949423 | Valor Extraido: 0.00
+ID: 5000590 | Valor Extraido: 0.00
+ID: 5043805 | Valor Extraido: 0.00
+ID: 5049546 | Valor Extraido: 0.00
+ID: 4981784 | Valor Extraido: 0.00
+ID: 5012881 | Valor Extraido: 0.00
+ID: 5013808 | Valor Extraido: 0.00
+ID: 4894561 | Valor Extraido: 0.00
+ID: 4957897 | Valor Extraido: 0.00
+ID: 4953165 | Valor Extraido: 0.00
+ID: 4941957 | Valor Extraido: 0.00
+ID: 6444199 | Valor Extraido: 0.00
+ID: 5075654 | Valor Extraido: 0.00
+ID: 4213597 | Valor Extraido: 0.00
+ID: 4991835 | Valor Extraido: 0.00
+ID: 4968281 | Valor Extraido: 0.00
+ID: 5032066 | Valor Extraido: 0.00
+ID: 5074906 | Valor Extraido: 0.00
+ID: 5093413 | Valor Extraido: 0.00
+ID: 5007238 | Valor Extraido: 0.00
+ID: 4965035 | Valor Extraido: 0.00
+ID: 4816328 | Valor Extraido: 0.00
+ID: 5014537 | Valor Extraido: 0.00
+ID: 4957870 | Valor Extraido: 0.00
+ID: 5304665 | Valor Extraido: 0.00
+ID: 5000594 | Valor Extraido: 0.00
+ID: 4968294 | Valor Extraido: 0.00
+ID: 4957837 | Valor Extraido: 0.00
+ID: 4974291 | Valor Extraido: 0.00
+ID: 4799394 | Valor Extraido: 0.00
+ID: 5011145 | Valor Extraido: 0.00
+ID: 5086883 | Valor Extraido: 0.00
+ID: 5007704 | Valor Extraido: 0.00
+ID: 4986209 | Valor Extraido: 0.00
+ID: 5032105 | Valor Extraido: 0.00
+ID: 5038465 | Valor Extraido: 0.00
+ID: 5059839 | Valor Extraido: 0.00
+ID: 5035047 | Valor Extraido: 0.00
+ID: 5054216 | Valor Extraido: 0.00
+ID: 4814148 | Valor Extraido: 0.00
+ID: 4838721 | Valor Extraido: 0.00
+ID: 4807675 | Valor Extraido: 0.00
+ID: 4702275 | Valor Extraido: 0.00
+ID: 5038540 | Valor Extraido: 0.00
+ID: 4888799 | Valor Extraido: 0.00
+ID: 4983643 | Valor Extraido: 0.00
+ID: 4882181 | Valor Extraido: 0.00
+ID: 5005506 | Valor Extraido: 0.00
+ID: 4353435 | Valor Extraido: 0.00
+ID: 5045447 | Valor Extraido: 0.00
+ID: 4769870 | Valor Extraido: 0.00
+ID: 5006858 | Valor Extraido: 0.00
+ID: 4844694 | Valor Extraido: 0.00
+ID: 4896131 | Valor Extraido: 0.00
+ID: 4708877 | Valor Extraido: 0.00
+ID: 5030734 | Valor Extraido: 0.00
