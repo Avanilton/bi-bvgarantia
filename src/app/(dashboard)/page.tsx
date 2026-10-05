@@ -4,7 +4,7 @@ import { useState, useEffect, useCallback, Suspense } from "react";
 import { useSearchParams } from "next/navigation";
 import { RefreshCw, Clock, Camera, DollarSign, Gavel, Handshake, CheckCircle2 } from "lucide-react";
 import { InadimplenciaCard, KpiCard } from "@/components/KpiCards";
-import { RecebimentoChart, FaturamentoChart, ReceitasVariaveisChart } from "@/components/Charts";
+import { RecebimentoChart, ComparativoInadimplenciaChart, ReceitasVariaveisChart } from "@/components/Charts";
 import { KpiDetailsModal } from "@/components/KpiDetailsModal";
 import { formatBRL } from "@/lib/utils";
 
@@ -154,7 +154,7 @@ function DashboardContent() {
 
         <div className="flex flex-col items-end gap-1">
           <div className="flex items-center gap-3">
-            {/* Status do último snapshot */}
+            {/* Status da última atualização*/}
             {snapLabel && (
               <div
                 className="flex items-center gap-1.5 text-xs rounded-full px-3 py-1.5"
@@ -257,8 +257,8 @@ function DashboardContent() {
           </>
         ) : (
           <>
+            <ComparativoInadimplenciaChart amigavel={data.cards.amigavel} juridicos={data.cards.juridicos} />
             <RecebimentoChart data={data.recebimento6Meses} />
-            <FaturamentoChart data={data.faturamento6Meses} />
           </>
         )}
       </div>

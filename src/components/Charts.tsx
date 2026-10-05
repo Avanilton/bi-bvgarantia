@@ -99,45 +99,54 @@ export function RecebimentoChart({ data }: { data: { mes: string; valor: number;
   );
 }
 
-// ── Faturamento & Crescimento ───────────────────────────────────────────────
-export function FaturamentoChart({ data }: { data: { mes: string; valor: number; crescimento: number }[] }) {
+// ── Comparativo Inadimplência ───────────────────────────────────────────────
+export function ComparativoInadimplenciaChart({ amigavel, juridicos }: { amigavel: number; juridicos: number }) {
+  const data = [
+    { name: "Inadimplência", amigavel, juridicos }
+  ];
   return (
     <div className="card p-5">
       <h3 className="font-semibold text-sm mb-4" style={{ color: "#111827" }}>
-        Faturamento & Crescimento
+        Comparativo Inadimplência
       </h3>
       <ResponsiveContainer width="100%" height={220}>
-        <ComposedChart data={data} margin={{ left: 0, right: 8 }}>
+        <BarChart data={data} margin={{ left: 0, right: 8 }}>
           <CartesianGrid strokeDasharray="3 3" stroke="#f3f4f6" />
-          <XAxis dataKey="mes" tick={{ fontSize: 11, fill: "#9ca3af" }} />
+          <XAxis dataKey="name" tick={{ fontSize: 11, fill: "#9ca3af" }} />
           <YAxis
-            yAxisId="left"
             tick={{ fontSize: 10, fill: "#9ca3af" }}
             tickFormatter={(v) =>
               new Intl.NumberFormat("pt-BR", { notation: "compact", currency: "BRL", style: "currency" }).format(v)
             }
             width={72}
           />
-          <YAxis
-            yAxisId="right"
-            orientation="right"
-            tick={{ fontSize: 10, fill: "#9ca3af" }}
-            tickFormatter={(v) => `${v}%`}
-            width={40}
-          />
           <Tooltip content={<CustomTooltip />} />
           <Legend wrapperStyle={{ fontSize: 11, color: "#6b7280" }} />
-          <Bar dataKey="valor" name="Faturamento" fill="#4ade80" radius={[4, 4, 0, 0]} maxBarSize={40} yAxisId="left" />
-          <Line
-            type="monotone"
-            dataKey="crescimento"
-            name="Crescimento (%)"
-            stroke="#f97316"
-            strokeWidth={2}
-            dot={{ fill: "#f97316", r: 3 }}
-            yAxisId="right"
-          />
-        </ComposedChart>
+          <Bar dataKey="amigavel" name="Amigável (Origem 5)" fill="#ef4444" radius={[4, 4, 0, 0]} maxBarSize={60}>
+            <LabelList
+              dataKey="amigavel"
+              position="top"
+              formatter={(v: any) => {
+                if (v == null) return "";
+                const num = Number(v);
+                return isNaN(num) ? "" : (num / 1000).toLocaleString("pt-BR", { maximumFractionDigits: 1 }) + "k";
+              }}
+              style={{ fontSize: 10, fill: "#6b7280", fontWeight: 600 }}
+            />
+          </Bar>
+          <Bar dataKey="juridicos" name="Jurídico (Origem 6)" fill="#f97316" radius={[4, 4, 0, 0]} maxBarSize={60}>
+            <LabelList
+              dataKey="juridicos"
+              position="top"
+              formatter={(v: any) => {
+                if (v == null) return "";
+                const num = Number(v);
+                return isNaN(num) ? "" : (num / 1000).toLocaleString("pt-BR", { maximumFractionDigits: 1 }) + "k";
+              }}
+              style={{ fontSize: 10, fill: "#6b7280", fontWeight: 600 }}
+            />
+          </Bar>
+        </BarChart>
       </ResponsiveContainer>
     </div>
   );
