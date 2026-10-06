@@ -110,7 +110,7 @@ export function ComparativoInadimplenciaChart({ amigavel, juridicos }: { amigave
         Comparativo Inadimplência
       </h3>
       <ResponsiveContainer width="100%" height={220}>
-        <BarChart data={data} margin={{ left: 0, right: 8 }}>
+        <BarChart data={data} margin={{ top: 25, left: 0, right: 8 }}>
           <CartesianGrid strokeDasharray="3 3" stroke="#f3f4f6" />
           <XAxis dataKey="name" tick={{ fontSize: 11, fill: "#9ca3af" }} />
           <YAxis
@@ -122,7 +122,7 @@ export function ComparativoInadimplenciaChart({ amigavel, juridicos }: { amigave
           />
           <Tooltip content={<CustomTooltip />} />
           <Legend wrapperStyle={{ fontSize: 11, color: "#6b7280" }} />
-          <Bar dataKey="amigavel" name="Amigável (Origem 5)" fill="#ef4444" radius={[4, 4, 0, 0]} maxBarSize={60}>
+          <Bar dataKey="amigavel" name="Amigável (Origem 5)" fill="#22c55e" radius={[4, 4, 0, 0]} maxBarSize={60}>
             <LabelList
               dataKey="amigavel"
               position="top"
