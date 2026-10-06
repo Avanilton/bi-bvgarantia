@@ -45,11 +45,13 @@ export async function GET(req: NextRequest) {
     }
 
     // ─── Cards principais (SUM) ──────────────────────────────────────────────
-    const [inadSum, recSum, jurSum, amiSum] = await Promise.all([
+    const [inadSum, recSum, jurSum, amiSum, inadO5Sum, inadO6Sum] = await Promise.all([
       prisma.kpiDiario.aggregate({ _sum: { valor: true }, where: buildWhere("INADIMPLENCIA") }),
       prisma.kpiDiario.aggregate({ _sum: { valor: true }, where: recWhere }),
       prisma.kpiDiario.aggregate({ _sum: { valor: true }, where: buildWhere("JURIDICOS") }),
       prisma.kpiDiario.aggregate({ _sum: { valor: true }, where: buildWhere("AMIGAVEL") }),
+      prisma.kpiDiario.aggregate({ _sum: { valor: true }, where: buildWhere("INAD_ORIGEM_5") }),
+      prisma.kpiDiario.aggregate({ _sum: { valor: true }, where: buildWhere("INAD_ORIGEM_6") }),
     ]);
 
     // ─── Gráfico: Recebimento & Faturamento (por meses do intervalo) ───────
@@ -120,6 +122,8 @@ export async function GET(req: NextRequest) {
         recebimento: recSum._sum.valor ?? 0,
         juridicos: jurSum._sum.valor ?? 0,
         amigavel: amiSum._sum.valor ?? 0,
+        inadOrigem5: inadO5Sum._sum.valor ?? 0,
+        inadOrigem6: inadO6Sum._sum.valor ?? 0,
       },
       recebimento6Meses: recComCrescimento,
       faturamento6Meses: faturamentoMesesLista,

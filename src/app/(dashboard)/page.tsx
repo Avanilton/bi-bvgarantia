@@ -14,6 +14,8 @@ interface DashData {
     recebimento: number;
     juridicos: number;
     amigavel: number;
+    inadOrigem5?: number;
+    inadOrigem6?: number;
   };
   recebimento6Meses: { mes: string; valor: number; crescimento: number }[];
   faturamento6Meses: { mes: string; valor: number; crescimento: number }[];
@@ -29,7 +31,7 @@ interface DashData {
 }
 
 const EMPTY: DashData = {
-  cards: { inadimplencia: 0, recebimento: 0, juridicos: 0, amigavel: 0 },
+  cards: { inadimplencia: 0, recebimento: 0, juridicos: 0, amigavel: 0, inadOrigem5: 0, inadOrigem6: 0 },
   recebimento6Meses: [],
   faturamento6Meses: [],
   receitasVar: { juros: 0, correcao: 0, multa: 0, encargo: 0, tarifaBoleto: 0 },
@@ -257,7 +259,7 @@ function DashboardContent() {
           </>
         ) : (
           <>
-            <ComparativoInadimplenciaChart amigavel={data.cards.amigavel} juridicos={data.cards.juridicos} />
+            <ComparativoInadimplenciaChart amigavel={data.cards.inadOrigem5 ?? 0} juridicos={data.cards.inadOrigem6 ?? 0} />
             <RecebimentoChart data={data.recebimento6Meses} />
           </>
         )}

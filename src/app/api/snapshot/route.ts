@@ -37,6 +37,48 @@ export async function POST() {
       [ID_EMPRESA]
     ) as any[];
 
+    // 1.A INADIMPLÊNCIA ORIGEM 5
+    const [inadO5Rows] = await pool.query(
+      `SELECT b.idimovel, i.nomefantasia,
+              DATE_FORMAT(b.dataVecto, '%Y-%m')   AS mesRef,
+              SUM(IFNULL(b.valorparc, 0))         AS valor,
+              SUM(IFNULL(b.juros, 0))             AS juros,
+              SUM(IFNULL(b.correcao, 0))          AS correcao,
+              SUM(IFNULL(b.multa, 0))             AS multa,
+              SUM(IFNULL(b.encargo, 0))           AS encargo,
+              SUM(IFNULL(b.tarifaBancaria, 0))    AS tarifaBoleto
+       FROM TBBOLETO b
+       JOIN TBIMOVEL i ON i.idEmpresa = b.idEmpresa AND i.idimovel = b.idimovel
+       WHERE b.idEmpresa  = ?
+         AND b.pago       = 0
+         AND b.cancelado  = 0
+         AND b.origem     = 5
+         AND b.dataVecto  < CURDATE()
+       GROUP BY b.idimovel, i.nomefantasia, mesRef`,
+      [ID_EMPRESA]
+    ) as any[];
+
+    // 1.B INADIMPLÊNCIA ORIGEM 6
+    const [inadO6Rows] = await pool.query(
+      `SELECT b.idimovel, i.nomefantasia,
+              DATE_FORMAT(b.dataVecto, '%Y-%m')   AS mesRef,
+              SUM(IFNULL(b.valorparc, 0))         AS valor,
+              SUM(IFNULL(b.juros, 0))             AS juros,
+              SUM(IFNULL(b.correcao, 0))          AS correcao,
+              SUM(IFNULL(b.multa, 0))             AS multa,
+              SUM(IFNULL(b.encargo, 0))           AS encargo,
+              SUM(IFNULL(b.tarifaBancaria, 0))    AS tarifaBoleto
+       FROM TBBOLETO b
+       JOIN TBIMOVEL i ON i.idEmpresa = b.idEmpresa AND i.idimovel = b.idimovel
+       WHERE b.idEmpresa  = ?
+         AND b.pago       = 0
+         AND b.cancelado  = 0
+         AND b.origem     = 6
+         AND b.dataVecto  < CURDATE()
+       GROUP BY b.idimovel, i.nomefantasia, mesRef`,
+      [ID_EMPRESA]
+    ) as any[];
+
     // 2. RECEBIMENTO (D-1): pagos no mês atual, até ontem (D-1)
     const [recRows] = await pool.query(
       `SELECT b.idimovel, i.nomefantasia,
@@ -147,6 +189,8 @@ export async function POST() {
 
     const allInserts = [
       ...toInsert(inadRows, "INADIMPLENCIA"),
+      ...toInsert(inadO5Rows, "INAD_ORIGEM_5"),
+      ...toInsert(inadO6Rows, "INAD_ORIGEM_6"),
       ...toInsert(recRows,  "RECEBIMENTO"),
       ...toInsert(jurRows,  "JURIDICOS"),
       ...toInsert(amiRows,  "AMIGAVEL"),

@@ -20,6 +20,42 @@ WHERE b.idEmpresa  = ?
   AND b.dataVecto  < CURDATE()
 GROUP BY b.idimovel, i.nomefantasia, mesRef;
 
+-- 1.A INADIMPLÊNCIA ORIGEM 5 (Para Comparativo Inadimplência)
+SELECT b.idimovel, i.nomefantasia,
+       DATE_FORMAT(b.dataVecto, '%Y-%m')   AS mesRef,
+       SUM(IFNULL(b.valorparc, 0))         AS valor,
+       SUM(IFNULL(b.juros, 0))             AS juros,
+       SUM(IFNULL(b.correcao, 0))          AS correcao,
+       SUM(IFNULL(b.multa, 0))             AS multa,
+       SUM(IFNULL(b.encargo, 0))           AS encargo,
+       SUM(IFNULL(b.tarifaBancaria, 0))    AS tarifaBoleto
+FROM TBBOLETO b
+JOIN TBIMOVEL i ON i.idEmpresa = b.idEmpresa AND i.idimovel = b.idimovel
+WHERE b.idEmpresa  = ?
+  AND b.pago       = 0
+  AND b.cancelado  = 0
+  AND b.origem     = 5
+  AND b.dataVecto  < CURDATE()
+GROUP BY b.idimovel, i.nomefantasia, mesRef;
+
+-- 1.B INADIMPLÊNCIA ORIGEM 6 (Para Comparativo Inadimplência)
+SELECT b.idimovel, i.nomefantasia,
+       DATE_FORMAT(b.dataVecto, '%Y-%m')   AS mesRef,
+       SUM(IFNULL(b.valorparc, 0))         AS valor,
+       SUM(IFNULL(b.juros, 0))             AS juros,
+       SUM(IFNULL(b.correcao, 0))          AS correcao,
+       SUM(IFNULL(b.multa, 0))             AS multa,
+       SUM(IFNULL(b.encargo, 0))           AS encargo,
+       SUM(IFNULL(b.tarifaBancaria, 0))    AS tarifaBoleto
+FROM TBBOLETO b
+JOIN TBIMOVEL i ON i.idEmpresa = b.idEmpresa AND i.idimovel = b.idimovel
+WHERE b.idEmpresa  = ?
+  AND b.pago       = 0
+  AND b.cancelado  = 0
+  AND b.origem     = 6
+  AND b.dataVecto  < CURDATE()
+GROUP BY b.idimovel, i.nomefantasia, mesRef;
+
 -- 2. RECEBIMENTO (Geração da Foto - usa dataPgto)
 --    Pagos no mês atual, até ontem (D-1)
 SELECT b.idimovel, i.nomefantasia,
