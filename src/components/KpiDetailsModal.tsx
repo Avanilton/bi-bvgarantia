@@ -13,7 +13,7 @@ interface CondoValueItem {
 interface KpiDetailsModalProps {
   isOpen: boolean;
   onClose: () => void;
-  tipo: "INADIMPLENCIA" | "RECEBIMENTO" | "JURIDICOS" | "AMIGAVEL" | null;
+  tipo: "INADIMPLENCIA" | "RECEBIMENTO" | "JURIDICOS" | "AMIGAVEL" | "INAD_ORIGEM_5" | "INAD_ORIGEM_6" | null;
   condominio?: string;
   dataInicio?: string;
   dataFim?: string;
@@ -74,9 +74,12 @@ export function KpiDetailsModal({
       case "RECEBIMENTO":
         return "#16a34a"; // Verde
       case "JURIDICOS":
+      case "INAD_ORIGEM_6":
         return "#ea580c"; // Laranja
       case "AMIGAVEL":
         return "#e11d48"; // Rosa/Vermelho
+      case "INAD_ORIGEM_5":
+        return "#22c55e"; // Verde
       default:
         return "#111827";
     }
