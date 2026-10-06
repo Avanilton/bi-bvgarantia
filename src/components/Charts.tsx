@@ -100,7 +100,15 @@ export function RecebimentoChart({ data }: { data: { mes: string; valor: number;
 }
 
 // ── Comparativo Inadimplência ───────────────────────────────────────────────
-export function ComparativoInadimplenciaChart({ amigavel, juridicos }: { amigavel: number; juridicos: number }) {
+export function ComparativoInadimplenciaChart({ 
+  amigavel, 
+  juridicos,
+  onClickBar
+}: { 
+  amigavel: number; 
+  juridicos: number;
+  onClickBar?: (tipo: string) => void;
+}) {
   const data = [
     { name: "Inadimplência", amigavel, juridicos }
   ];
@@ -122,7 +130,15 @@ export function ComparativoInadimplenciaChart({ amigavel, juridicos }: { amigave
           />
           <Tooltip content={<CustomTooltip />} />
           <Legend wrapperStyle={{ fontSize: 11, color: "#6b7280" }} />
-          <Bar dataKey="amigavel" name="Amigável (Origem 5)" fill="#22c55e" radius={[4, 4, 0, 0]} maxBarSize={60}>
+          <Bar 
+            dataKey="amigavel" 
+            name="Amigável (Origem 5)" 
+            fill="#22c55e" 
+            radius={[4, 4, 0, 0]} 
+            maxBarSize={60}
+            onClick={() => onClickBar?.("INAD_ORIGEM_5")}
+            cursor="pointer"
+          >
             <LabelList
               dataKey="amigavel"
               position="top"
@@ -134,7 +150,15 @@ export function ComparativoInadimplenciaChart({ amigavel, juridicos }: { amigave
               style={{ fontSize: 10, fill: "#6b7280", fontWeight: 600 }}
             />
           </Bar>
-          <Bar dataKey="juridicos" name="Jurídico (Origem 6)" fill="#f97316" radius={[4, 4, 0, 0]} maxBarSize={60}>
+          <Bar 
+            dataKey="juridicos" 
+            name="Jurídico (Origem 6)" 
+            fill="#f97316" 
+            radius={[4, 4, 0, 0]} 
+            maxBarSize={60}
+            onClick={() => onClickBar?.("INAD_ORIGEM_6")}
+            cursor="pointer"
+          >
             <LabelList
               dataKey="juridicos"
               position="top"

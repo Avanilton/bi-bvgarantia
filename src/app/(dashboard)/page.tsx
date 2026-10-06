@@ -47,7 +47,7 @@ function DashboardContent() {
   const [updatedAt, setUpdatedAt] = useState<Date | null>(null);
 
   const [modalTipo, setModalTipo] = useState<
-    "INADIMPLENCIA" | "RECEBIMENTO" | "JURIDICOS" | "AMIGAVEL" | null
+    "INADIMPLENCIA" | "RECEBIMENTO" | "JURIDICOS" | "AMIGAVEL" | "INAD_ORIGEM_5" | "INAD_ORIGEM_6" | null
   >(null);
 
   const condoId = searchParams.get("condominio");
@@ -259,7 +259,11 @@ function DashboardContent() {
           </>
         ) : (
           <>
-            <ComparativoInadimplenciaChart amigavel={data.cards.inadOrigem5 ?? 0} juridicos={data.cards.inadOrigem6 ?? 0} />
+            <ComparativoInadimplenciaChart 
+              amigavel={data.cards.inadOrigem5 ?? 0} 
+              juridicos={data.cards.inadOrigem6 ?? 0}
+              onClickBar={(tipo) => setModalTipo(tipo as any)} 
+            />
             <RecebimentoChart data={data.recebimento6Meses} />
           </>
         )}
