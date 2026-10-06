@@ -6,6 +6,7 @@ import {
   ComposedChart, PieChart, Pie, Cell, LabelList
 } from "recharts";
 import { formatBRL, formatPct } from "@/lib/utils";
+import { ExternalLink } from "lucide-react";
 
 // ── Tooltip customizado ──────────────────────────────────────────────────────
 const CustomTooltip = ({
@@ -113,10 +114,20 @@ export function ComparativoInadimplenciaChart({
     { name: "Inadimplência", amigavel, juridicos }
   ];
   return (
-    <div className="card p-5">
-      <h3 className="font-semibold text-sm mb-4" style={{ color: "#111827" }}>
-        Comparativo Inadimplência
-      </h3>
+    <div 
+      className={`card p-5 transition-all duration-200 ${onClickBar ? "cursor-pointer hover:shadow-lg hover:-translate-y-0.5 group" : ""}`}
+      onClick={() => onClickBar?.("INADIMPLENCIA")}
+    >
+      <div className="flex items-center justify-between mb-4">
+        <h3 className="font-semibold text-sm" style={{ color: "#111827" }}>
+          Comparativo Inadimplência
+        </h3>
+        {onClickBar && (
+          <span className="text-[10px] font-semibold text-orange-500 opacity-0 group-hover:opacity-100 transition-opacity flex items-center gap-1">
+            Ver detalhes <ExternalLink size={10} />
+          </span>
+        )}
+      </div>
       <ResponsiveContainer width="100%" height={220}>
         <BarChart data={data} margin={{ top: 25, left: 0, right: 8 }}>
           <CartesianGrid strokeDasharray="3 3" stroke="#f3f4f6" />
@@ -136,7 +147,10 @@ export function ComparativoInadimplenciaChart({
             fill="#22c55e" 
             radius={[4, 4, 0, 0]} 
             maxBarSize={60}
-            onClick={() => onClickBar?.("INAD_ORIGEM_5")}
+            onClick={(data, index, e) => {
+              e?.stopPropagation();
+              onClickBar?.("INAD_ORIGEM_5");
+            }}
             cursor="pointer"
           >
             <LabelList
@@ -156,7 +170,10 @@ export function ComparativoInadimplenciaChart({
             fill="#f97316" 
             radius={[4, 4, 0, 0]} 
             maxBarSize={60}
-            onClick={() => onClickBar?.("INAD_ORIGEM_6")}
+            onClick={(data, index, e) => {
+              e?.stopPropagation();
+              onClickBar?.("INAD_ORIGEM_6");
+            }}
             cursor="pointer"
           >
             <LabelList
