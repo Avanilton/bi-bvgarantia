@@ -33,7 +33,7 @@ const DEPARTAMENTOS = [
 
 const TIMEOUT_MS = 10 * 60 * 1000; // 10 minutos
 
-export default function Sidebar() {
+export default function Sidebar({ isAdmin, acessos }: { isAdmin: boolean; acessos: string[] }) {
   const pathname = usePathname();
   const router = useRouter();
   const searchParams = useSearchParams();
@@ -129,11 +129,16 @@ export default function Sidebar() {
     setMobileOpen(false);
   };
 
+  const hasAccess = (tela: string) => {
+    if (isAdmin) return true;
+    return acessos.includes(tela);
+  };
+
   const navItems = [
-    { href: "/", label: "Dashboard", icon: LayoutDashboard },
-    { href: "/rh", label: "Recursos Humanos", icon: Users },
-    { href: "/configuracoes", label: "Configurações", icon: Settings },
-  ];
+    { href: "/", label: "Dashboard", icon: LayoutDashboard, id: "dashboard" },
+    { href: "/rh", label: "Recursos Humanos", icon: Users, id: "rh" },
+    { href: "/configuracoes", label: "Configurações", icon: Settings, id: "configuracoes" },
+  ].filter(item => hasAccess(item.id));
 
   const selectedCondo = condominios.find((c) => String(c.IDIMOVEL) === condominio);
   const selectedName = selectedCondo ? selectedCondo.NOMEFANTASIA : "";
