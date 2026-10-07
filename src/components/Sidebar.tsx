@@ -16,6 +16,7 @@ import {
   Filter,
   Search,
   Check,
+  Users,
 } from "lucide-react";
 
 interface Condominio {
@@ -117,6 +118,7 @@ export default function Sidebar() {
 
   const navItems = [
     { href: "/", label: "Dashboard", icon: LayoutDashboard },
+    { href: "/rh", label: "Recursos Humanos", icon: Users },
     { href: "/configuracoes", label: "Configurações", icon: Settings },
   ];
 

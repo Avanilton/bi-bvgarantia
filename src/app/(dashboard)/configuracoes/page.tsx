@@ -8,9 +8,10 @@ import {
 // Camera mantido: usado no ícone da aba "Snapshot" no array de tabs
 
 type Perfil = "ADMIN" | "OPERADOR" | "VISUALIZADOR";
-const TELAS = ["dashboard", "configuracoes"];
+const TELAS = ["dashboard", "rh", "configuracoes"];
 const TELA_LABELS: Record<string, string> = {
   dashboard: "Dashboard Principal",
+  rh: "Recursos Humanos",
   configuracoes: "Configurações",
 };
 
