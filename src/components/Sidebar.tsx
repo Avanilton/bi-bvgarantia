@@ -17,12 +17,19 @@ import {
   Search,
   Check,
   Users,
+  Briefcase,
 } from "lucide-react";
 
 interface Condominio {
   IDIMOVEL: number;
   NOMEFANTASIA: string;
 }
+
+const DEPARTAMENTOS = [
+  "Operação", "Financeiro", "TI", "Diretoria", "SDR", 
+  "Marketing", "Rateio/Adm", "RH", "Departamento Pessoal", 
+  "Jurídico", "Outros"
+];
 
 const TIMEOUT_MS = 10 * 60 * 1000; // 10 minutos
 
@@ -33,6 +40,7 @@ export default function Sidebar() {
 
   const [condominios, setCondominios] = useState<Condominio[]>([]);
   const [condominio, setCondominio] = useState(searchParams.get("condominio") || "");
+  const [departamento, setDepartamento] = useState(searchParams.get("departamento") || "");
   const [searchCondo, setSearchCondo] = useState("");
   const [isCondoOpen, setIsCondoOpen] = useState(false);
   const [dataInicio, setDataInicio] = useState(searchParams.get("dataInicio") || "");
@@ -92,10 +100,16 @@ export default function Sidebar() {
   }, [resetTimer]);
 
   // Aplica filtros na URL com id customizado
-  const applyFiltersWithCondo = (newCondoId: string) => {
-    setCondominio(newCondoId);
+  const applyFiltersWithOverrides = (overrides: { condo?: string, depto?: string }) => {
+    if (overrides.condo !== undefined) setCondominio(overrides.condo);
+    if (overrides.depto !== undefined) setDepartamento(overrides.depto);
+    
     const params = new URLSearchParams();
-    if (newCondoId) params.set("condominio", newCondoId);
+    const currentCondo = overrides.condo !== undefined ? overrides.condo : condominio;
+    const currentDepto = overrides.depto !== undefined ? overrides.depto : departamento;
+    
+    if (currentCondo && pathname === "/") params.set("condominio", currentCondo);
+    if (currentDepto && pathname === "/rh") params.set("departamento", currentDepto);
     if (dataInicio) params.set("dataInicio", dataInicio);
     if (dataFim) params.set("dataFim", dataFim);
     router.push(`${pathname}?${params.toString()}`);
@@ -103,12 +117,11 @@ export default function Sidebar() {
   };
 
   // Aplica filtros na URL usando o estado atual
-  const applyFilters = () => {
-    applyFiltersWithCondo(condominio);
-  };
+  const applyFilters = () => applyFiltersWithOverrides({});
 
   const clearFilters = () => {
     setCondominio("");
+    setDepartamento("");
     setSearchCondo("");
     setDataInicio("");
     setDataFim("");
@@ -135,7 +148,11 @@ export default function Sidebar() {
       )
     : condominios;
 
-  const hasFilters = Boolean(condominio || dataInicio || dataFim);
+  const hasFilters = Boolean(
+    (pathname === "/" && condominio) || 
+    (pathname === "/rh" && departamento) || 
+    dataInicio || dataFim
+  );
 
   const renderSidebarContent = () => (
     <div className="flex flex-col h-full">
@@ -226,110 +243,143 @@ export default function Sidebar() {
         </div>
 
         {/* Condomínio com Pesquisa por Nome */}
-        <div className="mb-3 relative" ref={condoDropdownRef}>
-          <label className="block text-xs font-medium mb-1 px-1" style={{ color: "#6b7280" }}>
-            <Building2 size={11} className="inline mr-1" />
-            Condomínio
-          </label>
-          <div className="relative">
-            <input
-              type="text"
-              placeholder="Pesquisar por nome..."
-              value={searchCondo}
-              onFocus={(e) => {
-                setIsCondoOpen(true);
-                e.target.select();
-              }}
-              onClick={() => setIsCondoOpen(true)}
-              onChange={(e) => {
-                const val = e.target.value;
-                setSearchCondo(val);
-                setIsCondoOpen(true);
-                if (!val.trim()) {
-                  setCondominio("");
-                }
-              }}
-              className="input-base text-xs"
-              style={{ fontSize: "0.75rem", paddingLeft: "2.25rem", paddingRight: "2rem" }}
-            />
-            <Search
-              size={13}
-              className="absolute left-2.5 top-1/2 -translate-y-1/2 pointer-events-none"
-              style={{ color: "#9ca3af" }}
-            />
-            {searchCondo ? (
-              <button
-                type="button"
-                onClick={() => {
-                  setSearchCondo("");
-                  setIsCondoOpen(false);
-                  applyFiltersWithCondo("");
+        {pathname === "/" && (
+          <div className="mb-3 relative" ref={condoDropdownRef}>
+            <label className="block text-xs font-medium mb-1 px-1" style={{ color: "#6b7280" }}>
+              <Building2 size={11} className="inline mr-1" />
+              Condomínio
+            </label>
+            <div className="relative">
+              <input
+                type="text"
+                placeholder="Pesquisar por nome..."
+                value={searchCondo}
+                onFocus={(e) => {
+                  setIsCondoOpen(true);
+                  e.target.select();
                 }}
-                className="absolute right-2 top-1/2 -translate-y-1/2 text-gray-400 hover:text-gray-600 p-0.5 rounded"
-              >
-                <X size={12} />
-              </button>
-            ) : (
-              <button
-                type="button"
-                onClick={() => setIsCondoOpen((v) => !v)}
-                className="absolute right-2 top-1/2 -translate-y-1/2 text-gray-400 hover:text-gray-600 p-0.5 rounded"
-              >
-                <ChevronDown size={13} />
-              </button>
-            )}
-          </div>
-
-          {/* Lista de Opções Dropdown */}
-          {isCondoOpen && (
-            <div
-              className="absolute z-50 left-0 right-0 mt-1 bg-white border border-amber-100 rounded-xl shadow-lg max-h-48 overflow-y-auto py-1"
-              style={{ fontSize: "0.75rem" }}
-            >
-              <div
-                onMouseDown={(e) => {
-                  e.preventDefault();
-                  setSearchCondo("");
-                  setIsCondoOpen(false);
-                  applyFiltersWithCondo("");
+                onClick={() => setIsCondoOpen(true)}
+                onChange={(e) => {
+                  const val = e.target.value;
+                  setSearchCondo(val);
+                  setIsCondoOpen(true);
+                  if (!val.trim()) {
+                    setCondominio("");
+                  }
                 }}
-                className={`px-3 py-1.5 cursor-pointer hover:bg-orange-50 flex items-center justify-between text-xs ${
-                  !condominio ? "font-semibold text-orange-600 bg-orange-50/50" : "text-gray-700"
-                }`}
-              >
-                <span>Todos os condomínios</span>
-                {!condominio && <Check size={12} className="text-orange-500" />}
-              </div>
-
-              {filteredCondominios.length === 0 ? (
-                <div className="px-3 py-2 text-xs text-gray-400 text-center">
-                  Nenhum condomínio encontrado
-                </div>
+                className="input-base text-xs"
+                style={{ fontSize: "0.75rem", paddingLeft: "2.25rem", paddingRight: "2rem" }}
+              />
+              <Search
+                size={13}
+                className="absolute left-2.5 top-1/2 -translate-y-1/2 pointer-events-none"
+                style={{ color: "#9ca3af" }}
+              />
+              {searchCondo ? (
+                <button
+                  type="button"
+                  onClick={() => {
+                    setSearchCondo("");
+                    setIsCondoOpen(false);
+                    applyFiltersWithOverrides({ condo: "" });
+                  }}
+                  className="absolute right-2 top-1/2 -translate-y-1/2 text-gray-400 hover:text-gray-600 p-0.5 rounded"
+                >
+                  <X size={12} />
+                </button>
               ) : (
-                filteredCondominios.map((c) => {
-                  const isSelected = String(c.IDIMOVEL) === condominio;
-                  return (
-                    <div
-                      key={c.IDIMOVEL}
-                      onMouseDown={(e) => {
-                        e.preventDefault();
-                        setSearchCondo(c.NOMEFANTASIA);
-                        setIsCondoOpen(false);
-                        applyFiltersWithCondo(String(c.IDIMOVEL));
-                      }}
-                      className={`px-3 py-1.5 cursor-pointer hover:bg-orange-50 flex items-center justify-between text-xs ${
-                        isSelected ? "font-semibold text-orange-600 bg-orange-50/50" : "text-gray-700"
-                      }`}
-                    >
-                      <span className="truncate mr-2">{c.NOMEFANTASIA}</span>
-                      {isSelected && <Check size={12} className="text-orange-500 flex-shrink-0" />}
-                    </div>
-                  );
-                })
+                <button
+                  type="button"
+                  onClick={() => setIsCondoOpen((v) => !v)}
+                  className="absolute right-2 top-1/2 -translate-y-1/2 text-gray-400 hover:text-gray-600 p-0.5 rounded"
+                >
+                  <ChevronDown size={13} />
+                </button>
               )}
             </div>
-          )}
-        </div>
+
+            {/* Lista de Opções Dropdown */}
+            {isCondoOpen && (
+              <div
+                className="absolute z-50 left-0 right-0 mt-1 bg-white border border-amber-100 rounded-xl shadow-lg max-h-48 overflow-y-auto py-1"
+                style={{ fontSize: "0.75rem" }}
+              >
+                <div
+                  onMouseDown={(e) => {
+                    e.preventDefault();
+                    setSearchCondo("");
+                    setIsCondoOpen(false);
+                    applyFiltersWithOverrides({ condo: "" });
+                  }}
+                  className={`px-3 py-1.5 cursor-pointer hover:bg-orange-50 flex items-center justify-between text-xs ${
+                    !condominio ? "font-semibold text-orange-600 bg-orange-50/50" : "text-gray-700"
+                  }`}
+                >
+                  <span>Todos os condomínios</span>
+                  {!condominio && <Check size={12} className="text-orange-500" />}
+                </div>
+
+                {filteredCondominios.length === 0 ? (
+                  <div className="px-3 py-2 text-xs text-gray-400 text-center">
+                    Nenhum condomínio encontrado
+                  </div>
+                ) : (
+                  filteredCondominios.map((c) => {
+                    const isSelected = String(c.IDIMOVEL) === condominio;
+                    return (
+                      <div
+                        key={c.IDIMOVEL}
+                        onMouseDown={(e) => {
+                          e.preventDefault();
+                          setSearchCondo(c.NOMEFANTASIA);
+                          setIsCondoOpen(false);
+                          applyFiltersWithOverrides({ condo: String(c.IDIMOVEL) });
+                        }}
+                        className={`px-3 py-1.5 cursor-pointer hover:bg-orange-50 flex items-center justify-between text-xs ${
+                          isSelected ? "font-semibold text-orange-600 bg-orange-50/50" : "text-gray-700"
+                        }`}
+                      >
+                        <span className="truncate mr-2">{c.NOMEFANTASIA}</span>
+                        {isSelected && <Check size={12} className="text-orange-500 flex-shrink-0" />}
+                      </div>
+                    );
+                  })
+                )}
+              </div>
+            )}
+          </div>
+        )}
+
+        {/* Departamento (Para RH) */}
+        {pathname === "/rh" && (
+          <div className="mb-3">
+            <label className="block text-xs font-medium mb-1 px-1" style={{ color: "#6b7280" }}>
+              <Briefcase size={11} className="inline mr-1" />
+              Departamento
+            </label>
+            <div className="relative">
+              <select
+                value={departamento}
+                onChange={(e) => {
+                  setDepartamento(e.target.value);
+                  applyFiltersWithOverrides({ depto: e.target.value });
+                }}
+                className="input-base text-xs appearance-none"
+                style={{ fontSize: "0.75rem", paddingRight: "2rem" }}
+              >
+                <option value="">Todos os departamentos</option>
+                {DEPARTAMENTOS.map((dpto) => (
+                  <option key={dpto} value={dpto}>{dpto}</option>
+                ))}
+              </select>
+              <ChevronDown
+                size={13}
+                className="absolute right-2 top-1/2 -translate-y-1/2 pointer-events-none"
+                style={{ color: "#9ca3af" }}
+              />
+            </div>
+          </div>
+        )}
 
         {/* Data Início */}
         <div className="mb-3">
