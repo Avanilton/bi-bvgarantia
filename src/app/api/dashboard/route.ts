@@ -89,8 +89,7 @@ export async function GET(req: NextRequest) {
       recVarWhere.mesRef = toMesRef(new Date());
     }
 
-    const recVarRows = await prisma.kpiDiario.groupBy({
-      by: ["mesRef"],
+    const recVarRows = await prisma.kpiDiario.aggregate({
       _sum: {
         juros: true,
         correcao: true,
@@ -103,11 +102,11 @@ export async function GET(req: NextRequest) {
 
     // Agrega em totais para o gráfico de pizza
     const receitasVar = {
-      juros: recVarRows.reduce((a, r) => a + (r._sum.juros ?? 0), 0),
-      correcao: recVarRows.reduce((a, r) => a + (r._sum.correcao ?? 0), 0),
-      multa: recVarRows.reduce((a, r) => a + (r._sum.multa ?? 0), 0),
-      encargo: recVarRows.reduce((a, r) => a + (r._sum.encargo ?? 0), 0),
-      tarifaBoleto: recVarRows.reduce((a, r) => a + (r._sum.tarifaBoleto ?? 0), 0),
+      juros: recVarRows._sum.juros ?? 0,
+      correcao: recVarRows._sum.correcao ?? 0,
+      multa: recVarRows._sum.multa ?? 0,
+      encargo: recVarRows._sum.encargo ?? 0,
+      tarifaBoleto: recVarRows._sum.tarifaBoleto ?? 0,
     };
 
     // ─── Último snapshot ─────────────────────────────────────────────────────
