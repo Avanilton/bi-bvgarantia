@@ -1,6 +1,7 @@
 import { NextRequest, NextResponse } from "next/server";
 import { prisma } from "@/lib/prisma";
 import pool from "@/lib/mysql";
+import { toMesRef } from "@/lib/utils";
 
 const ID_EMPRESA = Number(process.env.ID_EMPRESA ?? 75);
 
@@ -53,6 +54,8 @@ export async function GET(req: NextRequest) {
       where.mesRef = {};
       if (mesInicio) where.mesRef.gte = mesInicio;
       if (mesFim) where.mesRef.lte = mesFim;
+    } else if (tipo === "RECEBIMENTO" || tipo === "RECEITAS_VAR") {
+      where.mesRef = toMesRef(new Date());
     }
 
     // 2. Agrupa valores gravados no PostgreSQL por condomínio
