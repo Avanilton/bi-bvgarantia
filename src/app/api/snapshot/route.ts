@@ -167,6 +167,35 @@ export async function POST() {
       [ID_EMPRESA]
     ) as any[];
 
+    // 6. VALOR_ABERTO
+    const [abertoRows] = await pool.query(
+      `SELECT b.idimovel, i.nomefantasia,
+              'GLOBAL' AS mesRef,
+              SUM(IFNULL(b.valorparc, 0)) AS valor
+       FROM TBBOLETO b
+       JOIN TBIMOVEL i ON i.idEmpresa = b.idEmpresa AND i.idimovel = b.idimovel
+       WHERE b.idEmpresa  = ?
+         AND b.pago       = 0
+         AND b.cancelado  = 0
+         AND b.dataPgto   IS NULL
+         AND IFNULL(b.idrateio, 0) <> 0
+         AND b.dataVecto  <= CURDATE()
+       GROUP BY b.idimovel, i.nomefantasia`,
+      [ID_EMPRESA]
+    ) as any[];
+
+    // 7. RATEIO
+    const [rateioRows] = await pool.query(
+      `SELECT a.idimovel, i.nomefantasia,
+              'GLOBAL' AS mesRef,
+              SUM(IFNULL(a.receitaantecipada, 0)) AS valor
+       FROM tbantecipacao a
+       JOIN TBIMOVEL i ON i.idEmpresa = a.idEmpresa AND i.idimovel = a.idimovel
+       WHERE a.idEmpresa = ?
+       GROUP BY a.idimovel, i.nomefantasia`,
+      [ID_EMPRESA]
+    ) as any[];
+
     // ─── Grava no SQLite ──────────────────────────────────────────────────────
     await prisma.kpiDiario.deleteMany({});
 
@@ -195,6 +224,8 @@ export async function POST() {
       ...toInsert(jurRows,  "JURIDICOS"),
       ...toInsert(amiRows,  "AMIGAVEL"),
       ...toInsert(recVarRows,"RECEITAS_VAR"),
+      ...toInsert(abertoRows,"VALOR_ABERTO"),
+      ...toInsert(rateioRows,"RATEIO"),
     ];
 
     if (allInserts.length > 0) {

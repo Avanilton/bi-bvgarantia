@@ -3,7 +3,8 @@
 import { useState, useEffect, useCallback, Suspense } from "react";
 import { useSearchParams } from "next/navigation";
 import { RefreshCw, Clock, Camera, DollarSign, Gavel, Handshake, CheckCircle2 } from "lucide-react";
-import { InadimplenciaCard, KpiCard } from "@/components/KpiCards";
+import { InadimplenciaCard, KpiCard, PercentCard } from "@/components/KpiCards";
+import { AlertTriangle } from "lucide-react";
 import { RecebimentoChart, ComparativoInadimplenciaChart, ReceitasVariaveisChart } from "@/components/Charts";
 import { KpiDetailsModal } from "@/components/KpiDetailsModal";
 import { formatBRL } from "@/lib/utils";
@@ -16,6 +17,8 @@ interface DashData {
     amigavel: number;
     inadOrigem5?: number;
     inadOrigem6?: number;
+    valorAberto: number;
+    rateio: number;
   };
   recebimento6Meses: { mes: string; valor: number; crescimento: number }[];
   faturamento6Meses: { mes: string; valor: number; crescimento: number }[];
@@ -31,7 +34,7 @@ interface DashData {
 }
 
 const EMPTY: DashData = {
-  cards: { inadimplencia: 0, recebimento: 0, juridicos: 0, amigavel: 0, inadOrigem5: 0, inadOrigem6: 0 },
+  cards: { inadimplencia: 0, recebimento: 0, juridicos: 0, amigavel: 0, inadOrigem5: 0, inadOrigem6: 0, valorAberto: 0, rateio: 0 },
   recebimento6Meses: [],
   faturamento6Meses: [],
   receitasVar: { juros: 0, correcao: 0, multa: 0, encargo: 0, tarifaBoleto: 0 },
@@ -211,13 +214,23 @@ function DashboardContent() {
         </div>
       </div>
 
-      {/* ── 4 Cards KPI ─────────────────────────────────────────────── */}
+      {/* ── Cards KPI ─────────────────────────────────────────────── */}
       <div className="grid grid-cols-1 sm:grid-cols-2 xl:grid-cols-4 gap-4">
-        <InadimplenciaCard
-          value={data.cards.inadimplencia}
-          loading={loading}
-          onClick={() => setModalTipo("INADIMPLENCIA")}
-        />
+        <div className="flex flex-col gap-4">
+          <InadimplenciaCard
+            value={data.cards.inadimplencia}
+            loading={loading}
+            onClick={() => setModalTipo("INADIMPLENCIA")}
+          />
+          <PercentCard
+            title="% Inadimplência"
+            value={data.cards.rateio > 0 ? (data.cards.valorAberto / data.cards.rateio) * 100 : 0}
+            icon={AlertTriangle}
+            colorRed
+            subtitle="Valor em aberto / Rateio"
+            loading={loading}
+          />
+        </div>
 
         <KpiCard
           title="Recebimento (D-1)"

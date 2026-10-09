@@ -45,13 +45,15 @@ export async function GET(req: NextRequest) {
     }
 
     // ─── Cards principais (SUM) ──────────────────────────────────────────────
-    const [inadSum, recSum, jurSum, amiSum, inadO5Sum, inadO6Sum] = await Promise.all([
+    const [inadSum, recSum, jurSum, amiSum, inadO5Sum, inadO6Sum, valorAbertoSum, rateioSum] = await Promise.all([
       prisma.kpiDiario.aggregate({ _sum: { valor: true }, where: buildWhere("INADIMPLENCIA") }),
       prisma.kpiDiario.aggregate({ _sum: { valor: true }, where: recWhere }),
       prisma.kpiDiario.aggregate({ _sum: { valor: true }, where: buildWhere("JURIDICOS") }),
       prisma.kpiDiario.aggregate({ _sum: { valor: true }, where: buildWhere("AMIGAVEL") }),
       prisma.kpiDiario.aggregate({ _sum: { valor: true }, where: buildWhere("INAD_ORIGEM_5") }),
       prisma.kpiDiario.aggregate({ _sum: { valor: true }, where: buildWhere("INAD_ORIGEM_6") }),
+      prisma.kpiDiario.aggregate({ _sum: { valor: true }, where: { tipo: "VALOR_ABERTO", ...condoWhere } }),
+      prisma.kpiDiario.aggregate({ _sum: { valor: true }, where: { tipo: "RATEIO", ...condoWhere } }),
     ]);
 
     // ─── Gráfico: Recebimento & Faturamento (por meses do intervalo) ───────
@@ -123,6 +125,8 @@ export async function GET(req: NextRequest) {
         amigavel: amiSum._sum.valor ?? 0,
         inadOrigem5: inadO5Sum._sum.valor ?? 0,
         inadOrigem6: inadO6Sum._sum.valor ?? 0,
+        valorAberto: valorAbertoSum._sum.valor ?? 0,
+        rateio: rateioSum._sum.valor ?? 0,
       },
       recebimento6Meses: recComCrescimento,
       faturamento6Meses: faturamentoMesesLista,

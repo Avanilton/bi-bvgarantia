@@ -142,3 +142,4 @@ HAVING valor > 0;
 -- * No `dataVecto` para (Inadimplência, Jurídicos, Amigável)
 -- * No `dataPgto` para (Recebimento, Receitas Variáveis, Recebimento 6 meses)
 -- ===============================================================================
+SELECT SUM(receitaantecipada) FROM tbAntecipacao WHERE idEmpresa = 75;
