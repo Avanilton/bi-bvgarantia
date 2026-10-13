@@ -5,7 +5,7 @@ import { useSearchParams } from "next/navigation";
 import { RefreshCw, Clock, Camera, DollarSign, Gavel, Handshake, CheckCircle2, Home } from "lucide-react";
 import { InadimplenciaCard, KpiCard, PercentCard } from "@/components/KpiCards";
 import { AlertTriangle } from "lucide-react";
-import { RecebimentoChart, ComparativoInadimplenciaChart, ReceitasVariaveisChart } from "@/components/Charts";
+import { RecebimentoChart, ComparativoInadimplenciaChart, ReceitasVariaveisChart, ImoveisPorEstadoChart } from "@/components/Charts";
 import { KpiDetailsModal } from "@/components/KpiDetailsModal";
 import { formatBRL } from "@/lib/utils";
 
@@ -273,6 +273,9 @@ function DashboardContent() {
           subtitle="Unidades com boletos não pagos"
           loading={loading}
         />
+        <div className="sm:col-span-2">
+          <ImoveisPorEstadoChart />
+        </div>
       </div>
 
       {/* ── Gráficos linha 1 ─────────────────────────────────────────── */}

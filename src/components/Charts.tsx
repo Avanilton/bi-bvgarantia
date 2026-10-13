@@ -296,3 +296,65 @@ export function ReceitasVariaveisChart({
     </div>
   );
 }
+
+// ── Concentração de Imóveis por Estado ──────────────────────────────────────
+// TODO: substituir por dados reais quando o campo de UF for identificado no banco
+export const MOCK_IMOVEIS_POR_ESTADO: { uf: string; qtde: number }[] = [
+  { uf: "SP", qtde: 142 },
+  { uf: "RJ", qtde: 87 },
+  { uf: "MG", qtde: 64 },
+  { uf: "PR", qtde: 41 },
+  { uf: "SC", qtde: 33 },
+  { uf: "RS", qtde: 28 },
+  { uf: "BA", qtde: 19 },
+  { uf: "GO", qtde: 12 },
+  { uf: "DF", qtde: 9 },
+  { uf: "PE", qtde: 7 },
+];
+
+const ESTADO_CORES = ["#f97316", "#22c55e", "#3b82f6", "#a855f7", "#eab308", "#9ca3af"];
+
+export function ImoveisPorEstadoChart({
+  data = MOCK_IMOVEIS_POR_ESTADO,
+  ficticio = true,
+}: {
+  data?: { uf: string; qtde: number }[];
+  ficticio?: boolean;
+}) {
+  const sorted = [...data].sort((a, b) => b.qtde - a.qtde);
+  const top5 = sorted.slice(0, 5);
+  const outros = sorted.slice(5).reduce((s, d) => s + d.qtde, 0);
+  const chartData = outros > 0 ? [...top5, { uf: "Outros", qtde: outros }] : top5;
+
+  return (
+    <div className="card p-5 animate-fadeIn">
+      <div className="flex items-center justify-between mb-2">
+        <h3 className="font-semibold text-sm" style={{ color: "#111827" }}>
+          Concentração de Imóveis por Estado
+        </h3>
+        {ficticio && (
+          <span className="text-[10px] font-semibold px-2 py-0.5 rounded-full bg-yellow-100 text-yellow-700 border border-yellow-200">
+            Dados fictícios
+          </span>
+        )}
+      </div>
+      <ResponsiveContainer width="100%" height={150}>
+        <BarChart data={chartData} margin={{ top: 18, left: 0, right: 8 }}>
+          <CartesianGrid strokeDasharray="3 3" stroke="#f3f4f6" />
+          <XAxis dataKey="uf" tick={{ fontSize: 11, fill: "#6b7280" }} />
+          <YAxis tick={{ fontSize: 10, fill: "#9ca3af" }} width={32} allowDecimals={false} />
+          <Tooltip
+            formatter={(v: any) => [Number(v).toLocaleString("pt-BR"), "Imóveis"]}
+            contentStyle={{ fontSize: 12, borderRadius: 8 }}
+          />
+          <Bar dataKey="qtde" name="Imóveis" radius={[4, 4, 0, 0]} maxBarSize={44}>
+            {chartData.map((_, i) => (
+              <Cell key={i} fill={ESTADO_CORES[i % ESTADO_CORES.length]} />
+            ))}
+            <LabelList dataKey="qtde" position="top" style={{ fontSize: 10, fill: "#6b7280", fontWeight: 600 }} />
+          </Bar>
+        </BarChart>
+      </ResponsiveContainer>
+    </div>
+  );
+}
