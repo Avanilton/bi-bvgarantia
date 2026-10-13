@@ -59,9 +59,10 @@ export function KpiCard({
   return (
     <div
       onClick={onClick}
-      className={`card p-5 animate-fadeIn transition-all duration-200 ${
+      className={`card p-5 self-start animate-fadeIn transition-all duration-200 ${
         onClick ? "cursor-pointer hover:shadow-lg hover:-translate-y-0.5 group" : ""
       }`}
+      style={{ borderLeft: `4px solid ${iconColor}` }}
     >
       <div className="flex items-start justify-between mb-3">
         <p className="text-xs font-semibold uppercase tracking-wide group-hover:text-orange-600 transition-colors" style={{ color: "#9ca3af" }}>
@@ -138,7 +139,7 @@ export function InadimplenciaCard({
   return (
     <div
       onClick={onClick}
-      className={`card p-5 animate-fadeIn transition-all duration-200 ${
+      className={`card p-5 self-start animate-fadeIn transition-all duration-200 ${
         onClick ? "cursor-pointer hover:shadow-lg hover:-translate-y-0.5 group" : ""
       }`}
       style={{
@@ -232,9 +233,10 @@ export function PercentCard({
   return (
     <div
       onClick={onClick}
-      className={`card p-5 animate-fadeIn transition-all duration-200 ${
+      className={`card p-5 self-start animate-fadeIn transition-all duration-200 ${
         onClick ? "cursor-pointer hover:shadow-lg hover:-translate-y-0.5 group" : ""
       }`}
+      style={{ borderLeft: `4px solid ${iconColor}` }}
     >
       <div className="flex items-start justify-between mb-3">
         <p className="text-xs font-semibold uppercase tracking-wide group-hover:text-orange-600 transition-colors" style={{ color: "#9ca3af" }}>
