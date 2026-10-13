@@ -282,8 +282,8 @@ function DashboardContent() {
         )}
       </div>
 
-      {/* ── Gráficos linha 2 ─────────────────────────────────────────── */}
-      <div className="grid grid-cols-1 lg:grid-cols-2 gap-4">
+      {/* ── Gráficos linha 2 (Receitas Variáveis) — oculto temporariamente ── */}
+      <div className="hidden grid-cols-1 lg:grid-cols-2 gap-4">{/* para reexibir: trocar "hidden" por "grid" */}
         {loading ? (
           <>
             <div className="card h-64 animate-pulse-soft" style={{ background: "#f9fafb" }} />
