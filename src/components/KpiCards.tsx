@@ -59,7 +59,7 @@ export function KpiCard({
   return (
     <div
       onClick={onClick}
-      className={`card p-5 self-start animate-fadeIn transition-all duration-200 ${
+      className={`card p-5 w-full self-start animate-fadeIn transition-all duration-200 ${
         onClick ? "cursor-pointer hover:shadow-lg hover:-translate-y-0.5 group" : ""
       }`}
       style={{ borderLeft: `4px solid ${iconColor}` }}
@@ -139,7 +139,7 @@ export function InadimplenciaCard({
   return (
     <div
       onClick={onClick}
-      className={`card p-5 self-start animate-fadeIn transition-all duration-200 ${
+      className={`card p-5 w-full self-start animate-fadeIn transition-all duration-200 ${
         onClick ? "cursor-pointer hover:shadow-lg hover:-translate-y-0.5 group" : ""
       }`}
       style={{
@@ -233,7 +233,7 @@ export function PercentCard({
   return (
     <div
       onClick={onClick}
-      className={`card p-5 self-start animate-fadeIn transition-all duration-200 ${
+      className={`card p-5 w-full self-start animate-fadeIn transition-all duration-200 ${
         onClick ? "cursor-pointer hover:shadow-lg hover:-translate-y-0.5 group" : ""
       }`}
       style={{ borderLeft: `4px solid ${iconColor}` }}
