@@ -2,7 +2,7 @@
 
 import { useState, useEffect, useCallback, Suspense } from "react";
 import { useSearchParams } from "next/navigation";
-import { RefreshCw, Clock, Camera, DollarSign, Gavel, Handshake, CheckCircle2 } from "lucide-react";
+import { RefreshCw, Clock, Camera, DollarSign, Gavel, Handshake, CheckCircle2, Home } from "lucide-react";
 import { InadimplenciaCard, KpiCard, PercentCard } from "@/components/KpiCards";
 import { AlertTriangle } from "lucide-react";
 import { RecebimentoChart, ComparativoInadimplenciaChart, ReceitasVariaveisChart } from "@/components/Charts";
@@ -19,6 +19,7 @@ interface DashData {
     inadOrigem6?: number;
     valorAberto: number;
     rateio: number;
+    unidadesAberto?: number;
   };
   recebimento6Meses: { mes: string; valor: number; crescimento: number }[];
   faturamento6Meses: { mes: string; valor: number; crescimento: number }[];
@@ -216,21 +217,11 @@ function DashboardContent() {
 
       {/* ── Cards KPI ─────────────────────────────────────────────── */}
       <div className="grid grid-cols-1 sm:grid-cols-2 xl:grid-cols-4 gap-4">
-        <div className="flex flex-col gap-4">
-          <InadimplenciaCard
-            value={data.cards.inadimplencia}
-            loading={loading}
-            onClick={() => setModalTipo("INADIMPLENCIA")}
-          />
-          <PercentCard
-            title="% Inadimplência"
-            value={data.cards.rateio > 0 ? (data.cards.valorAberto / data.cards.rateio) * 100 : 0}
-            icon={AlertTriangle}
-            colorRed
-            subtitle="Valor em aberto / Rateio"
-            loading={loading}
-          />
-        </div>
+        <InadimplenciaCard
+          value={data.cards.inadimplencia}
+          loading={loading}
+          onClick={() => setModalTipo("INADIMPLENCIA")}
+        />
 
         <KpiCard
           title="Recebimento (D-1)"
@@ -260,6 +251,27 @@ function DashboardContent() {
           subtitle="Origem 5— vencidos D-1"
           loading={loading}
           onClick={() => setModalTipo("AMIGAVEL")}
+        />
+      </div>
+
+      {/* ── Linha 2: % Inadimplência + Qtde Unidades ──────────────────── */}
+      <div className="grid grid-cols-1 sm:grid-cols-2 xl:grid-cols-4 gap-4 items-start">
+        <PercentCard
+          title="% Inadimplência"
+          value={data.cards.rateio > 0 ? (data.cards.valorAberto / data.cards.rateio) * 100 : 0}
+          icon={AlertTriangle}
+          colorRed
+          subtitle="Valor em aberto / Rateio"
+          loading={loading}
+        />
+        <KpiCard
+          title="Qtde Unidades"
+          value={data.cards.unidadesAberto ?? 0}
+          icon={Home}
+          colorOrange
+          isCount
+          subtitle="Unidades com boletos não pagos"
+          loading={loading}
         />
       </div>
 

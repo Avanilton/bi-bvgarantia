@@ -196,6 +196,20 @@ export async function POST() {
       [ID_EMPRESA]
     ) as any[];
 
+    // 8. UNIDADES COM BOLETO EM ABERTO: qtde distinta de unidades (idCliente) com boleto não pago
+    const [unidRows] = await pool.query(
+      `SELECT b.idimovel, i.nomefantasia,
+              'GLOBAL' AS mesRef,
+              COUNT(DISTINCT b.idCliente) AS valor
+       FROM TBBOLETO b
+       JOIN TBIMOVEL i ON i.idEmpresa = b.idEmpresa AND i.idimovel = b.idimovel
+       WHERE b.idEmpresa  = ?
+         AND b.pago       = 0
+         AND b.cancelado  = 0
+       GROUP BY b.idimovel, i.nomefantasia`,
+      [ID_EMPRESA]
+    ) as any[];
+
     // ─── Grava no SQLite ──────────────────────────────────────────────────────
     await prisma.kpiDiario.deleteMany({});
 
@@ -226,6 +240,7 @@ export async function POST() {
       ...toInsert(recVarRows,"RECEITAS_VAR"),
       ...toInsert(abertoRows,"VALOR_ABERTO"),
       ...toInsert(rateioRows,"RATEIO"),
+      ...toInsert(unidRows,"UNIDADES_ABERTO"),
     ];
 
     if (allInserts.length > 0) {

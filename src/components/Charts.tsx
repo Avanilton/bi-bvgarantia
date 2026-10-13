@@ -120,7 +120,7 @@ export function ComparativoInadimplenciaChart({
     >
       <div className="flex items-center justify-between mb-4">
         <h3 className="font-semibold text-sm" style={{ color: "#111827" }}>
-          Comparativo Inadimplência
+          Posição da Carteira
         </h3>
         {onClickBar && (
           <span className="text-[10px] font-semibold text-orange-500 opacity-0 group-hover:opacity-100 transition-opacity flex items-center gap-1">

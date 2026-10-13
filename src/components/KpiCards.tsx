@@ -25,6 +25,7 @@ interface KpiCardProps {
   subtitle?: string;
   loading?: boolean;
   onClick?: () => void;
+  isCount?: boolean;
 }
 
 export function KpiCard({
@@ -37,6 +38,7 @@ export function KpiCard({
   subtitle,
   loading,
   onClick,
+  isCount,
 }: KpiCardProps) {
   const [hidden, setHidden] = useState(false);
 
@@ -104,7 +106,7 @@ export function KpiCard({
             userSelect: hidden ? "none" : "auto",
           }}
         >
-          {formatBRL(value)}
+          {isCount ? Math.round(value).toLocaleString("pt-BR") : formatBRL(value)}
         </p>
       )}
 
