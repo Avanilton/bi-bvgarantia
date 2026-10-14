@@ -360,11 +360,22 @@ export function ImoveisPorEstadoChart({
 }
 
 // ── Inadimplência por Situação (top 4 + Outros) ─────────────────────────────
+// TODO: dados fictícios até a coluna `situacao` existir no banco
+export const MOCK_INAD_POR_SITUACAO = [
+  { situacao: "Em cobrança", valor: 185000 },
+  { situacao: "Acordo", valor: 122000 },
+  { situacao: "Jurídico", valor: 96000 },
+  { situacao: "Notificado", valor: 54000 },
+  { situacao: "Outros", valor: 31000 },
+];
+
 export function InadimplenciaPorSituacaoChart({
-  data,
+  data: dataProp,
 }: {
   data: { situacao: string; valor: number }[];
 }) {
+  const ficticio = dataProp.length === 0;
+  const data = ficticio ? MOCK_INAD_POR_SITUACAO : dataProp;
   const fmtCompact = (v: number) =>
     v >= 1_000_000 ? `${(v / 1_000_000).toFixed(1).replace(".", ",")}M`
     : v >= 1_000 ? `${(v / 1_000).toFixed(0)}k`
@@ -376,12 +387,13 @@ export function InadimplenciaPorSituacaoChart({
         <h3 className="font-semibold text-sm" style={{ color: "#111827" }}>
           Inadimplência por Situação
         </h3>
+        {ficticio && (
+          <span className="text-[10px] font-semibold px-2 py-0.5 rounded-full bg-yellow-100 text-yellow-700 border border-yellow-200">
+            Dados fictícios
+          </span>
+        )}
       </div>
-      {data.length === 0 ? (
-        <div className="h-[150px] flex items-center justify-center text-xs" style={{ color: "#9ca3af" }}>
-          Sem dados
-        </div>
-      ) : (
+      {(
         <ResponsiveContainer width="100%" height={150}>
           <BarChart data={data} margin={{ top: 18, left: 0, right: 8 }}>
             <CartesianGrid strokeDasharray="3 3" stroke="#f3f4f6" />

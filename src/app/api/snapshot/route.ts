@@ -211,20 +211,27 @@ export async function POST() {
     ) as any[];
 
     // 9. INADIMPLÊNCIA POR SITUAÇÃO (mesmo filtro do card de Inadimplência)
-    const [sitRows] = await pool.query(
-      `SELECT b.idimovel, i.nomefantasia,
-              DATE_FORMAT(b.dataVecto, '%Y-%m')   AS mesRef,
-              IFNULL(NULLIF(TRIM(b.situacao), ''), 'Sem situação') AS situacao,
-              SUM(IFNULL(b.valorparc, 0))         AS valor
-       FROM TBBOLETO b
-       JOIN TBIMOVEL i ON i.idEmpresa = b.idEmpresa AND i.idimovel = b.idimovel
-       WHERE b.idEmpresa  = ?
-         AND b.pago       = 0
-         AND b.cancelado  = 0
-         AND b.dataVecto  < CURDATE()
-       GROUP BY b.idimovel, i.nomefantasia, mesRef, situacao`,
-      [ID_EMPRESA]
-    ) as any[];
+    // A coluna `situacao` ainda não existe no banco: se a query falhar, segue sem esses dados.
+    let sitRows: any[] = [];
+    try {
+      const [rows] = await pool.query(
+        `SELECT b.idimovel, i.nomefantasia,
+                DATE_FORMAT(b.dataVecto, '%Y-%m')   AS mesRef,
+                IFNULL(NULLIF(TRIM(b.situacao), ''), 'Sem situação') AS situacao,
+                SUM(IFNULL(b.valorparc, 0))         AS valor
+         FROM TBBOLETO b
+         JOIN TBIMOVEL i ON i.idEmpresa = b.idEmpresa AND i.idimovel = b.idimovel
+         WHERE b.idEmpresa  = ?
+           AND b.pago       = 0
+           AND b.cancelado  = 0
+           AND b.dataVecto  < CURDATE()
+         GROUP BY b.idimovel, i.nomefantasia, mesRef, situacao`,
+        [ID_EMPRESA]
+      ) as any[];
+      sitRows = rows;
+    } catch (e: any) {
+      console.warn("Situação indisponível (coluna ausente?):", e.message);
+    }
 
     // ─── Grava no SQLite ──────────────────────────────────────────────────────
     await prisma.kpiDiario.deleteMany({});
