@@ -282,14 +282,6 @@ function DashboardContent() {
           subtitle="Valor total de compra de dívida"
           loading={loading}
         />
-        <KpiCard
-          title="Carteira em aberto"
-          value={0}
-          icon={Briefcase}
-          colorRed
-          subtitle="Total da carteira em aberto"
-          loading={loading}
-        />
       </div>
 
       {/* ── Linha 3: Imóveis por Estado + Inadimplência por Situação ──── */}

@@ -150,7 +150,7 @@ export function InadimplenciaCard({
     >
       <div className="flex items-start justify-between mb-3">
         <p className="text-xs font-semibold uppercase tracking-wide group-hover:text-red-600 transition-colors" style={{ color: "#9ca3af" }}>
-          Inadimplência (D-1)
+          Carteira em aberto
         </p>
         <div className="flex items-center gap-2 flex-shrink-0">
           {/* Botão olho */}
