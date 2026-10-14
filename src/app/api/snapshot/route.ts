@@ -210,6 +210,22 @@ export async function POST() {
       [ID_EMPRESA]
     ) as any[];
 
+    // 9. INADIMPLÊNCIA POR SITUAÇÃO (mesmo filtro do card de Inadimplência)
+    const [sitRows] = await pool.query(
+      `SELECT b.idimovel, i.nomefantasia,
+              DATE_FORMAT(b.dataVecto, '%Y-%m')   AS mesRef,
+              IFNULL(NULLIF(TRIM(b.situacao), ''), 'Sem situação') AS situacao,
+              SUM(IFNULL(b.valorparc, 0))         AS valor
+       FROM TBBOLETO b
+       JOIN TBIMOVEL i ON i.idEmpresa = b.idEmpresa AND i.idimovel = b.idimovel
+       WHERE b.idEmpresa  = ?
+         AND b.pago       = 0
+         AND b.cancelado  = 0
+         AND b.dataVecto  < CURDATE()
+       GROUP BY b.idimovel, i.nomefantasia, mesRef, situacao`,
+      [ID_EMPRESA]
+    ) as any[];
+
     // ─── Grava no SQLite ──────────────────────────────────────────────────────
     await prisma.kpiDiario.deleteMany({});
 
@@ -241,6 +257,7 @@ export async function POST() {
       ...toInsert(abertoRows,"VALOR_ABERTO"),
       ...toInsert(rateioRows,"RATEIO"),
       ...toInsert(unidRows,"UNIDADES_ABERTO"),
+      ...norm(sitRows).flatMap((r: any) => toInsert([r], `SIT:${String(r.situacao ?? r.SITUACAO ?? "Sem situação")}`)),
     ];
 
     if (allInserts.length > 0) {

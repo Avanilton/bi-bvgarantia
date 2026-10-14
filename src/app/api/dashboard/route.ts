@@ -112,6 +112,25 @@ export async function GET(req: NextRequest) {
       tarifaBoleto: recVarRows._sum.tarifaBoleto ?? 0,
     };
 
+    // ─── Gráfico: Inadimplência por Situação (top 4 + Outros) ────────────────
+    const sitWhere: any = { ...buildWhere(""), tipo: { startsWith: "SIT:" } };
+    const sitRows = await prisma.kpiDiario.groupBy({
+      by: ["tipo"],
+      _sum: { valor: true },
+      where: sitWhere,
+    });
+    const sitSorted = sitRows
+      .map((r) => ({ situacao: r.tipo.slice(4), valor: r._sum.valor ?? 0 }))
+      .filter((r) => r.valor > 0)
+      .sort((a, b) => b.valor - a.valor);
+    const porSituacao =
+      sitSorted.length > 5
+        ? [
+            ...sitSorted.slice(0, 4),
+            { situacao: "Outros", valor: sitSorted.slice(4).reduce((s, r) => s + r.valor, 0) },
+          ]
+        : sitSorted;
+
     // ─── Último snapshot ─────────────────────────────────────────────────────
     const ultimoSnap = await prisma.snapshotMeta.findFirst({
       orderBy: { criadoEm: "desc" },
@@ -133,6 +152,7 @@ export async function GET(req: NextRequest) {
       recebimento6Meses: recComCrescimento,
       faturamento6Meses: faturamentoMesesLista,
       receitasVar,
+      porSituacao,
       ultimoSnapshot: ultimoSnap?.criadoEm ?? null,
       snapStatus: ultimoSnap?.status ?? null,
     });

@@ -2,10 +2,10 @@
 
 import { useState, useEffect, useCallback, Suspense } from "react";
 import { useSearchParams } from "next/navigation";
-import { RefreshCw, Clock, Camera, DollarSign, Gavel, Handshake, CheckCircle2, Home } from "lucide-react";
+import { RefreshCw, Clock, Camera, DollarSign, Gavel, Handshake, CheckCircle2, Home, Briefcase } from "lucide-react";
 import { InadimplenciaCard, KpiCard, PercentCard } from "@/components/KpiCards";
 import { AlertTriangle } from "lucide-react";
-import { RecebimentoChart, ComparativoInadimplenciaChart, ReceitasVariaveisChart, ImoveisPorEstadoChart } from "@/components/Charts";
+import { RecebimentoChart, ComparativoInadimplenciaChart, ReceitasVariaveisChart, ImoveisPorEstadoChart, InadimplenciaPorSituacaoChart } from "@/components/Charts";
 import { KpiDetailsModal } from "@/components/KpiDetailsModal";
 import { formatBRL } from "@/lib/utils";
 
@@ -30,6 +30,7 @@ interface DashData {
     encargo: number;
     tarifaBoleto: number;
   };
+  porSituacao?: { situacao: string; valor: number }[];
   ultimoSnapshot: string | null;
   snapStatus: string | null;
 }
@@ -273,9 +274,28 @@ function DashboardContent() {
           subtitle="Unidades com boletos não pagos"
           loading={loading}
         />
-        <div className="sm:col-span-2">
-          <ImoveisPorEstadoChart />
-        </div>
+        <KpiCard
+          title="Compra de dívida"
+          value={0}
+          icon={DollarSign}
+          colorGreen
+          subtitle="Valor total de compra de dívida"
+          loading={loading}
+        />
+        <KpiCard
+          title="Carteira em aberto"
+          value={0}
+          icon={Briefcase}
+          colorRed
+          subtitle="Total da carteira em aberto"
+          loading={loading}
+        />
+      </div>
+
+      {/* ── Linha 3: Imóveis por Estado + Inadimplência por Situação ──── */}
+      <div className="grid grid-cols-1 lg:grid-cols-2 gap-4">
+        <ImoveisPorEstadoChart />
+        <InadimplenciaPorSituacaoChart data={data.porSituacao ?? []} />
       </div>
 
       {/* ── Gráficos linha 1 ─────────────────────────────────────────── */}

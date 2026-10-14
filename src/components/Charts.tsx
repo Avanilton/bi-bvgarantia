@@ -358,3 +358,48 @@ export function ImoveisPorEstadoChart({
     </div>
   );
 }
+
+// ── Inadimplência por Situação (top 4 + Outros) ─────────────────────────────
+export function InadimplenciaPorSituacaoChart({
+  data,
+}: {
+  data: { situacao: string; valor: number }[];
+}) {
+  const fmtCompact = (v: number) =>
+    v >= 1_000_000 ? `${(v / 1_000_000).toFixed(1).replace(".", ",")}M`
+    : v >= 1_000 ? `${(v / 1_000).toFixed(0)}k`
+    : String(Math.round(v));
+
+  return (
+    <div className="card p-5 animate-fadeIn">
+      <div className="flex items-center justify-between mb-2">
+        <h3 className="font-semibold text-sm" style={{ color: "#111827" }}>
+          Inadimplência por Situação
+        </h3>
+      </div>
+      {data.length === 0 ? (
+        <div className="h-[150px] flex items-center justify-center text-xs" style={{ color: "#9ca3af" }}>
+          Sem dados
+        </div>
+      ) : (
+        <ResponsiveContainer width="100%" height={150}>
+          <BarChart data={data} margin={{ top: 18, left: 0, right: 8 }}>
+            <CartesianGrid strokeDasharray="3 3" stroke="#f3f4f6" />
+            <XAxis dataKey="situacao" tick={{ fontSize: 10, fill: "#6b7280" }} interval={0} />
+            <YAxis tick={{ fontSize: 10, fill: "#9ca3af" }} width={40} tickFormatter={fmtCompact} />
+            <Tooltip
+              formatter={(v: any) => [formatBRL(Number(v)), "Inadimplência"]}
+              contentStyle={{ fontSize: 12, borderRadius: 8 }}
+            />
+            <Bar dataKey="valor" name="Inadimplência" radius={[4, 4, 0, 0]} maxBarSize={44}>
+              {data.map((d, i) => (
+                <Cell key={i} fill={d.situacao === "Outros" ? "#9ca3af" : ESTADO_CORES[i % ESTADO_CORES.length]} />
+              ))}
+              <LabelList dataKey="valor" position="top" formatter={(v: any) => fmtCompact(Number(v))} style={{ fontSize: 10, fill: "#6b7280", fontWeight: 600 }} />
+            </Bar>
+          </BarChart>
+        </ResponsiveContainer>
+      )}
+    </div>
+  );
+}
