@@ -12,6 +12,7 @@ const TITULOS: Record<string, string> = {
   AMIGAVEL: "Detalhes do Amigável não pagos",
   INAD_ORIGEM_5: "Inadimplência Amigável (Origem 5)",
   INAD_ORIGEM_6: "Inadimplência Jurídico (Origem 6)",
+  UNIDADES_ABERTO: "Quantidade de Unidades (Ativos: Total | Inativos: Em aberto)",
 };
 
 // GET /api/dashboard/detalhes?tipo=INADIMPLENCIA&condominio=X&dataInicio=...

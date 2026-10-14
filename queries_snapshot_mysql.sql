@@ -133,6 +133,47 @@ WHERE b.idEmpresa  = ?
 GROUP BY b.idimovel, i.nomefantasia, mesRef
 HAVING valor > 0;
 
+-- 6. QUANTIDADE DE UNIDADES (Ativos total de unidades + Inativos com cobrança em aberto)
+--    Regra:
+--    * Condomínios ATIVOS (com antecipação recente nos últimos 90 dias): contagem total de unidades (TBCLIENTE)
+--    * Condomínios INATIVOS: contagem de unidades com cobrança em aberto (TBBOLETO pago=0 e cancelado=0)
+SELECT 
+  i.idimovel,
+  i.nomefantasia,
+  'GLOBAL' AS mesRef,
+  CASE 
+    WHEN atv.idImovel IS NOT NULL THEN
+      -- Condomínio ATIVO: total de unidades cadastradas (adimplentes + inadimplentes)
+      COALESCE(cli.total_unidades, 0)
+    ELSE
+      -- Condomínio INATIVO: apenas unidades com cobrança em aberto
+      COALESCE(bol_aberto.unidades_aberto, 0)
+  END AS valor
+FROM TBIMOVEL i
+LEFT JOIN (
+  SELECT DISTINCT idImovel 
+  FROM tbantecipacao 
+  WHERE idEmpresa = ?
+    AND mesRef >= DATE_SUB(CURDATE(), INTERVAL 90 DAY)
+) atv ON atv.idImovel = i.idimovel
+LEFT JOIN (
+  SELECT idImovel, COUNT(DISTINCT idCliente) AS total_unidades
+  FROM tbcliente
+  WHERE idEmpresa = ?
+  GROUP BY idImovel
+) cli ON cli.idImovel = i.idimovel
+LEFT JOIN (
+  SELECT idImovel, COUNT(DISTINCT idCliente) AS unidades_aberto
+  FROM tbboleto
+  WHERE idEmpresa = ?
+    AND pago = 0
+    AND cancelado = 0
+  GROUP BY idImovel
+) bol_aberto ON bol_aberto.idImovel = i.idimovel
+WHERE i.idEmpresa = ?
+HAVING valor > 0
+ORDER BY valor DESC;
+
 -- ===============================================================================
 -- DICAS:
 -- Como os dados são cacheados (fotografados), ao realizar filtros no Dashboard,

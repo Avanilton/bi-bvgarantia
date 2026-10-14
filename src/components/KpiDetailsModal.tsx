@@ -13,7 +13,7 @@ interface CondoValueItem {
 interface KpiDetailsModalProps {
   isOpen: boolean;
   onClose: () => void;
-  tipo: "INADIMPLENCIA" | "RECEBIMENTO" | "JURIDICOS" | "AMIGAVEL" | "INAD_ORIGEM_5" | "INAD_ORIGEM_6" | null;
+  tipo: "INADIMPLENCIA" | "RECEBIMENTO" | "JURIDICOS" | "AMIGAVEL" | "INAD_ORIGEM_5" | "INAD_ORIGEM_6" | "UNIDADES_ABERTO" | null;
   condominio?: string;
   dataInicio?: string;
   dataFim?: string;
@@ -80,6 +80,8 @@ export function KpiDetailsModal({
         return "#e11d48"; // Rosa/Vermelho
       case "INAD_ORIGEM_5":
         return "#22c55e"; // Verde
+      case "UNIDADES_ABERTO":
+        return "#9333ea"; // Roxo
       default:
         return "#111827";
     }
@@ -174,7 +176,9 @@ export function KpiDetailsModal({
                           className="text-xs font-bold whitespace-nowrap flex-shrink-0"
                           style={{ color: valueColor }}
                         >
-                          {formatBRL(item.valor)}
+                          {tipo === "UNIDADES_ABERTO"
+                            ? `${item.valor.toLocaleString("pt-BR")} unid.`
+                            : formatBRL(item.valor)}
                         </span>
                       </div>
                     ))

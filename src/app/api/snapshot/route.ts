@@ -196,19 +196,68 @@ export async function POST() {
       [ID_EMPRESA]
     ) as any[];
 
-    // 8. UNIDADES COM BOLETO EM ABERTO: qtde distinta de unidades (idCliente) com boleto não pago
-    const [unidRows] = await pool.query(
-      `SELECT b.idimovel, i.nomefantasia,
-              'GLOBAL' AS mesRef,
-              COUNT(DISTINCT b.idCliente) AS valor
-       FROM TBBOLETO b
-       JOIN TBIMOVEL i ON i.idEmpresa = b.idEmpresa AND i.idimovel = b.idimovel
-       WHERE b.idEmpresa  = ?
-         AND b.pago       = 0
-         AND b.cancelado  = 0
-       GROUP BY b.idimovel, i.nomefantasia`,
+    // 8. QUANTIDADE DE UNIDADES:
+    //    - Condomínios ATIVOS (com antecipação nos últimos 90 dias): contagem total de unidades (inadimplentes ou adimplentes)
+    //    - Condomínios INATIVOS: contagem de unidades com cobrança em aberto (pago = 0 e cancelado = 0)
+    const [atvRows] = (await pool.query(
+      `SELECT DISTINCT idImovel 
+       FROM tbantecipacao 
+       WHERE idEmpresa = ? 
+         AND mesRef >= DATE_SUB(CURDATE(), INTERVAL 90 DAY)`,
       [ID_EMPRESA]
-    ) as any[];
+    )) as any[];
+    const ativosSet = new Set(atvRows.map((r: any) => Number(r.idImovel ?? r.IDIMOVEL)));
+
+    const [imoveisRows] = (await pool.query(
+      `SELECT idimovel, nomefantasia FROM TBIMOVEL WHERE idEmpresa = ?`,
+      [ID_EMPRESA]
+    )) as any[];
+
+    const [cliRows] = (await pool.query(
+      `SELECT idImovel, COUNT(DISTINCT idCliente) AS total
+       FROM tbcliente
+       WHERE idEmpresa = ?
+       GROUP BY idImovel`,
+      [ID_EMPRESA]
+    )) as any[];
+    const mapaCli = new Map<number, number>();
+    for (const r of cliRows) {
+      mapaCli.set(Number(r.idImovel ?? r.IDIMOVEL), Number(r.total ?? 0));
+    }
+
+    const [bolAbertoRows] = (await pool.query(
+      `SELECT idImovel, COUNT(DISTINCT idCliente) AS total
+       FROM tbboleto
+       WHERE idEmpresa = ?
+         AND pago = 0
+         AND cancelado = 0
+       GROUP BY idImovel`,
+      [ID_EMPRESA]
+    )) as any[];
+    const mapaBolAberto = new Map<number, number>();
+    for (const r of bolAbertoRows) {
+      mapaBolAberto.set(Number(r.idImovel ?? r.IDIMOVEL), Number(r.total ?? 0));
+    }
+
+    const unidRows: any[] = [];
+    for (const imovel of imoveisRows) {
+      const id = Number(imovel.idimovel ?? imovel.IDIMOVEL);
+      const nome = String(imovel.nomefantasia ?? imovel.NOMEFANTASIA ?? "");
+      const isAtivo = ativosSet.has(id);
+      
+      const valor = isAtivo
+        ? (mapaCli.get(id) || 0)
+        : (mapaBolAberto.get(id) || 0);
+
+      if (valor > 0) {
+        unidRows.push({
+          idimovel: id,
+          nomefantasia: nome,
+          mesRef: "GLOBAL",
+          valor,
+        });
+      }
+    }
 
     // 9. INADIMPLÊNCIA POR SITUAÇÃO (mesmo filtro do card de Inadimplência)
     // A coluna `situacao` ainda não existe no banco: se a query falhar, segue sem esses dados.

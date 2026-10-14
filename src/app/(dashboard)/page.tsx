@@ -52,7 +52,7 @@ function DashboardContent() {
   const [updatedAt, setUpdatedAt] = useState<Date | null>(null);
 
   const [modalTipo, setModalTipo] = useState<
-    "INADIMPLENCIA" | "RECEBIMENTO" | "JURIDICOS" | "AMIGAVEL" | "INAD_ORIGEM_5" | "INAD_ORIGEM_6" | null
+    "INADIMPLENCIA" | "RECEBIMENTO" | "JURIDICOS" | "AMIGAVEL" | "INAD_ORIGEM_5" | "INAD_ORIGEM_6" | "UNIDADES_ABERTO" | null
   >(null);
 
   const condoId = searchParams.get("condominio");
@@ -271,8 +271,9 @@ function DashboardContent() {
           icon={Home}
           colorOrange
           isCount
-          subtitle="Unidades com boletos não pagos"
+          subtitle="Ativos (total) + Inativos (em aberto)"
           loading={loading}
+          onClick={() => setModalTipo("UNIDADES_ABERTO")}
         />
         <KpiCard
           title="Compra de dívida"
